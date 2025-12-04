@@ -1,3 +1,19 @@
+package com.petinder.service;
+
+import com.petinder.dto.PetDto;
+import com.petinder.mapper.PetMapper;
+import com.petinder.model.Pet;
+import com.petinder.repository.PetRepository;
+import com.petinder.repository.SwipeRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class FeedService {

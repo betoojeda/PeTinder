@@ -1,8 +1,8 @@
 package com.petinder.controller;
 
-import com.petinder.dto.AuthResponse;
-import com.petinder.dto.LoginRequest;
-import com.petinder.dto.RegisterRequest;
+import com.petinder.dto.AuthResponseDto;
+import com.petinder.dto.LoginRequestDto;
+import com.petinder.dto.RegisterRequestDto;
 import com.petinder.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +15,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest r) {
+    public ResponseEntity<AuthResponseDto> register(@RequestBody RegisterRequestDto r) {
         return ResponseEntity.ok(authService.register(r));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest r) {
+    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto r) {
         return ResponseEntity.ok(authService.login(r));
     }
 }

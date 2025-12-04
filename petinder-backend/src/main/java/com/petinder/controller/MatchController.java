@@ -1,6 +1,6 @@
 package com.petinder.controller;
 
-import com.petinder.model.MatchEntity;
+import com.petinder.model.Match;
 import com.petinder.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class MatchController {
     private final MatchService matchService;
 
     @GetMapping("/pet/{petId}")
-    public ResponseEntity<List<MatchEntity>> matchesForPet(@PathVariable Long petId) {
+    public ResponseEntity<List<Match>> matchesForPet(@PathVariable Long petId) {
         return ResponseEntity.ok(matchService.findAllByPetId(petId));
     }
 }

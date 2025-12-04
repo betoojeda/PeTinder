@@ -1,12 +1,12 @@
 package com.petinder.controller;
 
 import com.petinder.dto.PetDto;
+import com.petinder.model.Pet;
 import com.petinder.service.PetService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/pets")
@@ -18,13 +18,6 @@ public class PetController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody PetDto dto) {
         return ResponseEntity.ok(petService.createPet(dto));
-    }
-
-    @GetMapping("/feed")
-    public ResponseEntity<List<PetDto>> feed(@RequestParam(required = false) Long userId) {
-        // obtenemos ids de pets swypeados del user (puedes mejorar paginación/filtros)
-        List<Long> excluded = List.of(); // simple por ahora
-        return ResponseEntity.ok(petService.feedForUser(userId, excluded));
     }
 
     @GetMapping("/feed")

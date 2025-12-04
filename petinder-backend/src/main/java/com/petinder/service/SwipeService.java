@@ -1,8 +1,8 @@
 package com.petinder.service;
 
-import com.petinder.model.MatchEntity;
-import com.petinder.model.Swipe;
+import com.petinder.model.Match;
 import com.petinder.model.Pet;
+import com.petinder.model.Swipe;
 import com.petinder.model.User;
 import com.petinder.repository.MatchRepository;
 import com.petinder.repository.PetRepository;
@@ -63,7 +63,7 @@ public class SwipeService {
                 Long petA = Math.min(aId, bId);
                 Long petB = Math.max(aId, bId);
                 if (matchRepository.findByPetAAndPetB(petA, petB).isEmpty()) {
-                    MatchEntity m = MatchEntity.builder().petA(petA).petB(petB).build();
+                    Match m = Match.builder().petA(petA).petB(petB).build();
                     matchRepository.save(m);
                 }
                 return true;
