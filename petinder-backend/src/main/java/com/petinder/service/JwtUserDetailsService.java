@@ -1,0 +1,23 @@
+package com.petinder.service;
+
+import com.petinder.model.User;
+import com.petinder.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class JwtUserDetailsService {
+
+    private final UserRepository userRepository;
+
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+}

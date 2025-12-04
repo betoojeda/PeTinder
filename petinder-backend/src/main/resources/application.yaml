@@ -1,13 +1,22 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/petinder
+    url: jdbc:postgresql://localhost:5432/petinderdb
     username: petinder
-    password: secret
+    password: petinder123
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: update   # crea las tablas automáticamente
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  jackson:
+    serialization:
+      indent_output: true
+
+server:
+  port: 8080
 
 jwt:
-  secret: "KeyProdChange"
+  secret: 12345678901234567890123456789012
   expiration: 86400000

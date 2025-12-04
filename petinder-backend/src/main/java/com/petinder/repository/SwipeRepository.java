@@ -1,12 +1,10 @@
-package com.petinder.repository;
-
-import com.petinder.model.Swipe;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
-import java.util.List;
-
+@Repository
 public interface SwipeRepository extends JpaRepository<Swipe, Long> {
-    Optional<Swipe> findByUserIdAndPetId(Long userId, Long petId);
-    List<Swipe> findAllByUserId(Long userId);
+
+    @Query("""
+        SELECT s.targetPet.id
+        FROM Swipe s
+        WHERE s.user.id = :userId
+    """)
+    Set<Long> findAllSwipedPetIdsByUser(Long userId);
 }
