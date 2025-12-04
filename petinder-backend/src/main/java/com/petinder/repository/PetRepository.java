@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Long> {
@@ -18,4 +19,6 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
             AND p.id NOT IN :excludedPetIds
             """)
     Page<Pet> findAvailableFeed(Long userId, Collection<Long> excludedPetIds, Pageable pageable);
+
+    List<Pet> findByOwnerId(Long ownerId);
 }

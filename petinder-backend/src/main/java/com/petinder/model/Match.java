@@ -1,27 +1,26 @@
 package com.petinder.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-
+@Entity
+@Table(name = "matches")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Entity
-@Table(name = "matches", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"pet_a","pet_b"})
-})
 public class Match {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "pet_a", nullable = false)
+    @Column(nullable = false)
     private Long petA;
 
-    @Column(name = "pet_b", nullable = false)
+    @Column(nullable = false)
     private Long petB;
-
-    private Instant createdAt = Instant.now();
 }

@@ -1,0 +1,48 @@
+services:
+  # Servicio de Base de Datos (PostgreSQL)
+  db:
+    image: postgres:14-alpine
+    container_name: petinder-db
+    environment:
+      - POSTGRES_USER=petinder
+      - POSTGRES_PASSWORD=petinder
+      - POSTGRES_DB=petinder
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    # --- ¡AQUÍ ESTÁ EL CAMBIO! ---
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U petinder -d petinder"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Servicio del Backend (Spring Boot)
+  backend:
+    container_name: petinder-backend
+    build: ./petinder-backend
+    depends_on:
+      db: # --- ¡Y AQUÍ! ---
+        condition: service_healthy # Espera a que el healthcheck pase
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/petinder
+      - SPRING_DATASOURCE_USERNAME=petinder
+      - SPRING_DATASOURCE_PASSWORD=petinder
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - JWT_SECRET=tu-secreto-jwt-muy-largo-y-seguro-debe-tener-al-menos-32-caracteres
+      - JWT_EXPIRATION=86400000
+
+  # Servicio del Frontend (React + Nginx)
+  frontend:
+    container_name: petinder-frontend
+    build: ./petinder-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  db-data:

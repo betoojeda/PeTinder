@@ -1,34 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Petinder</title>
-</head>
-<body>
-<h1>Petinder</h1>
-
-<div id="auth">
-    <h2>Login</h2>
-    <input id="loginEmail" placeholder="email">
-    <input id="loginPass" type="password" placeholder="password">
-    <button onclick="login()">Entrar</button>
-
-    <h2>Register</h2>
-    <input id="regName" placeholder="Nombre">
-    <input id="regEmail" placeholder="Email">
-    <input id="regPass" type="password" placeholder="Password">
-    <button onclick="register()">Crear cuenta</button>
-</div>
-
-<div id="app" style="display:none;">
-    <h2>Feed</h2>
-    <div id="pet"></div>
-    <button onclick="swipe('LIKE')">❤️ Like</button>
-    <button onclick="swipe('NOPE')">❌ No</button>
-
-    <h2>Matches</h2>
-    <div id="matches"></div>
-</div>
-
-<script src="app.js"></script>
-</body>
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/LogoFull.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pettinder</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

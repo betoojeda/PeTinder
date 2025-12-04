@@ -7,10 +7,12 @@ import com.petinder.model.User;
 import com.petinder.repository.UserRepository;
 import com.petinder.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,29 +21,33 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
 
     public AuthResponseDto register(RegisterRequestDto r) {
         if (userRepository.findByEmail(r.getEmail()).isPresent()) {
-            throw new RuntimeException("Email ya registrado");
+            throw new RuntimeException("El correo ya está registrado.");
         }
-        User u = User.builder()
+        User newUser = User.builder()
+                .name(r.getName())
                 .email(r.getEmail())
                 .password(passwordEncoder.encode(r.getPassword()))
-                .name(r.getName())
+                .role(User.Role.USER) // Asignar rol por defecto
                 .build();
-        User saved = userRepository.save(u);
-        String token = jwtUtil.generateToken(saved.getEmail());
-        return new AuthResponseDto(token);
+        userRepository.save(newUser);
+
+        // Autenticar y generar token
+        return login(new LoginRequestDto(r.getEmail(), r.getPassword()));
     }
 
     public AuthResponseDto login(LoginRequestDto r) {
-        Optional<User> ou = userRepository.findByEmail(r.getEmail());
-        if (ou.isEmpty()) throw new RuntimeException("Credenciales inválidas");
-        User u = ou.get();
-        if (!passwordEncoder.matches(r.getPassword(), u.getPassword())) {
-            throw new RuntimeException("Credenciales inválidas");
-        }
-        String token = jwtUtil.generateToken(u.getEmail());
-        return new AuthResponseDto(token);
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(r.getEmail(), r.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        
+        User user = (User) authentication.getPrincipal();
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+
+        return new AuthResponseDto(token, user.getId(), user.getName(), user.getEmail(), user.getRole().name());
     }
 }

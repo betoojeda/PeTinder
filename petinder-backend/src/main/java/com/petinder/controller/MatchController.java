@@ -1,10 +1,13 @@
 package com.petinder.controller;
 
-import com.petinder.model.Match;
+import com.petinder.dto.MatchDto;
 import com.petinder.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -14,8 +17,9 @@ import java.util.List;
 public class MatchController {
     private final MatchService matchService;
 
-    @GetMapping("/pet/{petId}")
-    public ResponseEntity<List<Match>> matchesForPet(@PathVariable Long petId) {
-        return ResponseEntity.ok(matchService.findAllByPetId(petId));
+    @GetMapping
+    public ResponseEntity<List<MatchDto>> getMyMatches() {
+        Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(matchService.getMatchesForUser(userId));
     }
 }

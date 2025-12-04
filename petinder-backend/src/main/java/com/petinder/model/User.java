@@ -1,7 +1,10 @@
 package com.petinder.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
@@ -23,5 +26,14 @@ public class User {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     private Instant createdAt = Instant.now();
+
+    public enum Role {
+        USER,
+        ADMIN
+    }
 }
