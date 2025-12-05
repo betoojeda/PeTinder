@@ -2,6 +2,7 @@ package com.petmatch.controller;
 
 import com.petmatch.dto.PetDto;
 import com.petmatch.dto.UserAdminDto;
+import com.petmatch.dto.UserRegistrationStatsDto;
 import com.petmatch.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,5 +30,10 @@ public class AdminController {
     @GetMapping("/pets")
     public List<PetDto> getAllPets() {
         return adminService.getAllPets();
+    }
+
+    @GetMapping("/stats/user-registrations")
+    public List<UserRegistrationStatsDto> getUserRegistrationStats() {
+        return adminService.getUserRegistrationStats();
     }
 }

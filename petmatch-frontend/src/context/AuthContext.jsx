@@ -1,96 +1,63 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; // Necesitaremos esta librería para decodificar el token
+import { login as apiLogin, register as apiRegister, logout as apiLogout, getMe } from '../services/api';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
+  // Al cargar la app, verifica si ya hay una sesión activa
   useEffect(() => {
-    const bootstrapAuth = () => {
-      const storedToken = localStorage.getItem('token');
-      if (storedToken) {
-        try {
-          const decoded = jwtDecode(storedToken);
-          // Comprobar si el token ha expirado
-          if (decoded.exp * 1000 < Date.now()) {
-            localStorage.removeItem('token');
-            setToken(null);
-          } else {
-            setToken(storedToken);
-            // El backend ahora nos da el rol en el token
-            setUser({ email: decoded.sub, role: decoded.role });
-          }
-        } catch (error) {
-          console.error("Token inválido o corrupto", error);
-          localStorage.removeItem('token');
-          setToken(null);
+    const bootstrapAuth = async () => {
+      try {
+        const userData = await getMe();
+        if (userData) {
+          setUser(userData);
         }
+      } catch (error) {
+        console.error("Error al verificar la sesión:", error);
+        // No hacemos nada, el usuario simplemente no estará logueado
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     bootstrapAuth();
   }, []);
 
   const login = async (email, password) => {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-      throw new Error('Error en el login');
-    }
-
-    const data = await response.json();
-    const decoded = jwtDecode(data.token);
-    
-    localStorage.setItem('token', data.token);
-    setToken(data.token);
-    setUser({ email: decoded.sub, role: decoded.role });
-
-    return { role: decoded.role }; // Devolver el rol del usuario
+    const userData = await apiLogin({ email, password });
+    setUser(userData);
+    return userData;
   };
 
   const register = async (formData) => {
-    const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-    });
-
-    if (!response.ok) {
-        // Lanzar el error con la respuesta para que el componente pueda leer el mensaje
-        const errorData = await response.json().catch(() => ({ message: 'Error en el registro' }));
-        const error = new Error(errorData.message);
-        error.response = { data: errorData };
-        throw error;
-    }
-    // Después del registro, hacemos login para obtener el token y los datos
-    await login(formData.email, formData.password);
+    const userData = await apiRegister(formData);
+    setUser(userData);
+    return userData;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await apiLogout();
     setUser(null);
-    setToken(null);
-    localStorage.removeItem('token');
   };
 
   const value = {
     user,
-    token,
     login,
     register,
     logout,
     isAuthenticated: !!user,
     isAdmin: user?.role === 'ADMIN',
+    isLoading: loading,
   };
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <p>Cargando aplicación...</p>
+      </div>
+    );
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

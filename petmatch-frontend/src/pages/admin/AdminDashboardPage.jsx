@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PerroAdmin from '../../assets/PerroAdmin.png'; // Importamos la imagen
-import '../../App.css'; // Nos aseguramos de que los estilos se carguen
+import PerroAdmin from '../../assets/PerroAdmin.png';
+import '../../App.css';
 
 const AdminDashboardPage = () => {
   return (
@@ -16,6 +16,9 @@ const AdminDashboardPage = () => {
             </Link>
             <Link to="/admin/pets" className="admin-nav-button">
               Gestionar Mascotas
+            </Link>
+            <Link to="/admin/stats" className="admin-nav-button">
+              Ver Estadísticas
             </Link>
           </nav>
         </div>

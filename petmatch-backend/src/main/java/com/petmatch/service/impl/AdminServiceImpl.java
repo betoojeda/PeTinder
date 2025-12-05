@@ -2,6 +2,7 @@ package com.petmatch.service.impl;
 
 import com.petmatch.dto.PetDto;
 import com.petmatch.dto.UserAdminDto;
+import com.petmatch.dto.UserRegistrationStatsDto;
 import com.petmatch.mapper.PetMapper;
 import com.petmatch.model.User;
 import com.petmatch.repository.PetRepository;
@@ -43,6 +44,12 @@ public class AdminServiceImpl implements AdminService {
                 .collect(Collectors.toList());
         log.info("Found {} pets", pets.size());
         return pets;
+    }
+
+    @Override
+    public List<UserRegistrationStatsDto> getUserRegistrationStats() {
+        log.info("Fetching user registration stats for admin dashboard");
+        return userRepository.findUserRegistrationStatsForLast30Days();
     }
 
     private UserAdminDto toUserAdminDto(User user) {

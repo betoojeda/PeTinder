@@ -1,14 +1,17 @@
 package com.petmatch.service;
 
-import com.petmatch.dto.AuthResponseDto;
 import com.petmatch.dto.LoginRequestDto;
+import com.petmatch.dto.LoginResponse;
 import com.petmatch.dto.RegisterRequestDto;
+import com.petmatch.dto.UserDto;
 import com.petmatch.model.PasswordResetToken;
 import com.petmatch.model.User;
 import com.petmatch.repository.PasswordResetTokenRepository;
 import com.petmatch.repository.UserRepository;
 import com.petmatch.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,8 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -35,10 +36,8 @@ public class AuthService {
     private final PasswordResetTokenRepository tokenRepository;
     private final EmailService emailService;
 
-    public AuthResponseDto register(RegisterRequestDto r) {
+    public LoginResponse register(RegisterRequestDto r) {
         log.info("Attempting to register user with email: {}", r.getEmail());
-        log.debug("RegisterRequestDto received: {}", r);
-
         if (userRepository.findByEmail(r.getEmail()).isPresent()) {
             log.warn("Registration failed: Email {} already registered.", r.getEmail());
             throw new RuntimeException("El correo ya está registrado.");
@@ -55,23 +54,18 @@ public class AuthService {
                 .role(User.Role.USER)
                 .build();
         
-        log.debug("New User object built: {}", newUser);
-
         try {
             userRepository.save(newUser);
             log.info("User {} registered successfully.", newUser.getEmail());
         } catch (DataIntegrityViolationException e) {
             log.error("Error saving new user due to data integrity violation: {}", e.getMessage());
             throw new RuntimeException("El correo electrónico ya está registrado. Por favor, utiliza otro.");
-        } catch (Exception e) {
-            log.error("Error saving new user {}: {}", newUser.getEmail(), e.getMessage(), e);
-            throw new RuntimeException("Error al guardar el usuario: " + e.getMessage());
         }
 
         return login(new LoginRequestDto(r.getEmail(), r.getPassword()));
     }
 
-    public AuthResponseDto login(LoginRequestDto r) {
+    public LoginResponse login(LoginRequestDto r) {
         log.info("Attempting to log in user with email: {}", r.getEmail());
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(r.getEmail(), r.getPassword())
@@ -81,7 +75,11 @@ public class AuthService {
         User user = (User) authentication.getPrincipal();
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
         log.info("User {} logged in successfully.", user.getEmail());
-        return new AuthResponseDto(token, user.getId(), user.getName(), user.getEmail(), user.getRole().name());
+        
+        return LoginResponse.builder()
+                .token(token)
+                .user(UserDto.from(user))
+                .build();
     }
 
     public void forgotPassword(String email) {
