@@ -6,13 +6,18 @@ import com.petmatch.model.Pet;
 import com.petmatch.model.User;
 import com.petmatch.repository.PetRepository;
 import com.petmatch.repository.UserRepository;
+import com.petmatch.service.CloudinaryService;
 import com.petmatch.service.PetService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,8 +30,10 @@ public class PetServiceImpl implements PetService {
     private final PetRepository petRepository;
     private final UserRepository userRepository;
     private final PetMapper petMapper;
+    private final CloudinaryService cloudinaryService;
 
     @Override
+    @Transactional
     public PetDto createPet(PetDto dto) {
         log.info("Creating pet for owner with ID: {}", dto.getOwnerId());
         User owner = userRepository.findById(dto.getOwnerId())
@@ -41,7 +48,7 @@ public class PetServiceImpl implements PetService {
                 .breed(dto.getBreed())
                 .age(dto.getAge())
                 .description(dto.getDescription())
-                .photoUrl(dto.getPhotoUrl())
+                .photoUrls(dto.getPhotoUrls() != null ? dto.getPhotoUrls() : new ArrayList<>())
                 .size(dto.getSize())
                 .gender(dto.getGender())
                 .energyLevel(dto.getEnergyLevel())
@@ -63,6 +70,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional
     public PetDto updatePet(Long id, PetDto petDto) {
         log.info("Updating pet with ID: {}", id);
         Pet pet = petRepository.findById(id)
@@ -78,7 +86,7 @@ public class PetServiceImpl implements PetService {
         pet.setBreed(petDto.getBreed());
         pet.setAge(petDto.getAge());
         pet.setDescription(petDto.getDescription());
-        pet.setPhotoUrl(petDto.getPhotoUrl());
+        pet.setPhotoUrls(petDto.getPhotoUrls() != null ? petDto.getPhotoUrls() : new ArrayList<>());
         pet.setSize(petDto.getSize());
         pet.setGender(petDto.getGender());
         pet.setEnergyLevel(petDto.getEnergyLevel());
@@ -99,6 +107,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional
     public void deletePet(Long id) {
         log.info("Deleting pet with ID: {}", id);
         Pet pet = petRepository.findById(id)
@@ -114,13 +123,11 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PetDto getPet(Long id) {
         log.info("Fetching pet with ID: {}", id);
         return petRepository.findById(id)
-                .map(pet -> {
-                    log.info("Pet found with ID: {}", id);
-                    return petMapper.toDto(pet);
-                })
+                .map(petMapper::toDto)
                 .orElseThrow(() -> {
                     log.error("Pet not found with ID: {}", id);
                     return new RuntimeException("Pet not found");
@@ -128,6 +135,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PetDto> getAllPets() {
         log.info("Fetching all pets");
         List<PetDto> pets = petRepository.findAll().stream()
@@ -138,6 +146,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PetDto> getPetsByOwner(Long ownerId) {
         log.info("Fetching pets for owner with ID: {}", ownerId);
         List<PetDto> pets = petRepository.findByOwnerId(ownerId).stream()
@@ -146,7 +155,24 @@ public class PetServiceImpl implements PetService {
         log.info("Found {} pets for owner with ID: {}", pets.size(), ownerId);
         return pets;
     }
+    
+    @Override
+    @Transactional
+    public PetDto addPhotoToPet(Long petId, MultipartFile file) throws IOException {
+        log.info("Adding photo to pet with ID: {}", petId);
+        Pet pet = petRepository.findById(petId)
+                .orElseThrow(() -> new RuntimeException("Pet not found"));
 
+        checkOwnershipOrAdmin(pet);
+
+        String photoUrl = cloudinaryService.uploadFile(file);
+        pet.getPhotoUrls().add(photoUrl);
+
+        Pet updatedPet = petRepository.save(pet);
+        log.info("Photo added to pet with ID: {}. New URL: {}", petId, photoUrl);
+        return petMapper.toDto(updatedPet);
+    }
+    
     private void checkOwnershipOrAdmin(Pet pet) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!pet.getOwner().getId().equals(currentUser.getId()) && !currentUser.getRole().equals(User.Role.ADMIN)) {

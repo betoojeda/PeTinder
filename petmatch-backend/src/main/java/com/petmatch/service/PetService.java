@@ -1,7 +1,9 @@
 package com.petmatch.service;
 
 import com.petmatch.dto.PetDto;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface PetService {
@@ -17,4 +19,6 @@ public interface PetService {
     List<PetDto> getAllPets();
 
     List<PetDto> getPetsByOwner(Long ownerId);
+
+    PetDto addPhotoToPet(Long petId, MultipartFile file) throws IOException;
 }

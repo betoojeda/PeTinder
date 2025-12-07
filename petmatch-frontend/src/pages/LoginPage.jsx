@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import logo from '../assets/LogoSinFondo.png'; // Usando el logo sin fondo
+import logo from '../assets/LogoSinFondo.png';
 import logoWatermark from '../assets/LogoSinFondo.png';
 import '../App.css';
 
@@ -81,6 +81,7 @@ const LoginPage = () => {
           <p className="forgot-password" style={{ marginTop: '1rem' }}>
             <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
           </p>
+          <Link to="/" className="back-to-home-button">Volver a la Página Principal</Link>
         </form>
       </div>
     </div>

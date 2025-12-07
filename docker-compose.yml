@@ -21,13 +21,18 @@ services:
   backend:
     container_name: petmatch-backend
     build: ./petmatch-backend
+    env_file:
+      - ./.env # Forzar la carga del archivo .env
     depends_on:
       db:
         condition: service_healthy
     ports:
       - "8080:8080"
-      # - "5005:5005" # Puerto de depuración, descomentar solo para desarrollo
+      - "5005:5005" # Puerto de depuración activado
     environment:
+      # Activar el agente de depuración de Java
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+      # Estas variables se cargarán desde .env, pero las mantenemos aquí para claridad
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
       - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
@@ -43,6 +48,10 @@ services:
       - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
       # URL del frontend para los correos
       - FRONTEND_URL=${FRONTEND_URL}
+      # Cloudinary (también se cargarán desde .env)
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
     restart: on-failure
 
   # Servicio del Frontend (React + Nginx)

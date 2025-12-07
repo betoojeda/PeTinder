@@ -1,0 +1,54 @@
+.pet-gallery-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 600px; /* Ancho máximo de la galería */
+  margin: 0 auto;
+}
+
+.main-image-wrapper {
+  width: 100%;
+  height: 400px; /* Altura fija para la imagen principal */
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-pet-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+}
+
+.thumbnail-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.thumbnail-image {
+  width: 80px; /* Tamaño de las miniaturas */
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.thumbnail-image:hover {
+  transform: scale(1.05);
+}
+
+.thumbnail-image.active {
+  border-color: #ff5864; /* Color de borde para la miniatura activa */
+}
+
+.no-images-text {
+  color: #666;
+  font-style: italic;
+}

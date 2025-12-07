@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import logo from '../assets/LogoSinFondo.png'; // Usando el logo sin fondo
+import logo from '../assets/LogoSinFondo.png';
 import '../App.css';
 
 const RegisterPage = () => {
@@ -27,7 +27,7 @@ const RegisterPage = () => {
     e.preventDefault();
     setError('');
     try {
-      await register(formData); // Enviar el objeto formData completo
+      await register(formData);
       navigate('/');
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'Error al registrarse. Inténtalo de nuevo.';
@@ -113,6 +113,7 @@ const RegisterPage = () => {
           <p className="auth-switch">
             ¿Ya tienes cuenta? <Link to="/login">Inicia Sesión</Link>
           </p>
+          <Link to="/" className="back-to-home-button">Volver a la Página Principal</Link>
         </form>
       </div>
     </div>

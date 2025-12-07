@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class PetDto {
     @Size(max = 1000, message = "La descripción no puede tener más de 1000 caracteres")
     private String description;
 
-    private String photoUrl;
+    private List<String> photoUrls; // Cambiado a una lista
 
     private String size;
     private String gender;

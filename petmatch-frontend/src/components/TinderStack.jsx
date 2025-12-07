@@ -2,13 +2,16 @@ import React, { useState, useEffect, useMemo } from 'react';
 import TinderCard from 'react-tinder-card';
 import toast from 'react-hot-toast';
 
-import { getFeed, swipe as apiSwipe } from '../services/api'; // Importar las nuevas funciones
+import { getFeed, swipe as apiSwipe } from '../services/api';
 import SkeletonCard from './SkeletonCard';
+import PetProfileModal from './PetProfileModal'; // Importar el modal
 
 const TinderStack = () => {
   const [pets, setPets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPet, setSelectedPet] = useState(null);
 
   useEffect(() => {
     const fetchPets = async () => {
@@ -25,7 +28,7 @@ const TinderStack = () => {
       }
     };
     fetchPets();
-  }, []); // El interceptor de Axios maneja el token, no necesitamos pasarlo como dependencia
+  }, []);
 
   const handleSwipe = async (direction, petId) => {
     try {
@@ -43,6 +46,16 @@ const TinderStack = () => {
     Array(pets.length).fill(0).map(() => React.createRef()),
     [pets]
   );
+
+  const handleCardClick = (pet) => {
+    setSelectedPet(pet);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedPet(null);
+  };
 
   if (isLoading) {
     return (
@@ -71,8 +84,9 @@ const TinderStack = () => {
           preventSwipe={['up', 'down']}
         >
           <div
-            style={{ backgroundImage: 'url(' + (pet.photoUrl || '/placeholder.jpg') + ')' }}
+            style={{ backgroundImage: 'url(' + (pet.photoUrls && pet.photoUrls.length > 0 ? pet.photoUrls[0] : '/placeholder.jpg') + ')' }}
             className='card'
+            onClick={() => handleCardClick(pet)} // Hacer la tarjeta clickeable
           >
             <div className="card-info">
               <h3>{pet.name}, {pet.age}</h3>
@@ -81,6 +95,8 @@ const TinderStack = () => {
           </div>
         </TinderCard>
       ))}
+
+      {showModal && <PetProfileModal pet={selectedPet} onClose={handleCloseModal} />}
     </div>
   );
 };

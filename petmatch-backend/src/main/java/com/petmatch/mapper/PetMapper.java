@@ -10,6 +10,10 @@ import java.util.List;
 public class PetMapper {
 
     public PetDto toDto(Pet pet) {
+        if (pet == null) {
+            return null;
+        }
+
         PetDto dto = new PetDto();
         dto.setId(pet.getId());
         dto.setName(pet.getName());
@@ -17,9 +21,7 @@ public class PetMapper {
         dto.setBreed(pet.getBreed());
         dto.setAge(pet.getAge());
         dto.setDescription(pet.getDescription());
-        dto.setPhotoUrl(pet.getPhotoUrl());
-
-        // Mapeo de los nuevos campos
+        dto.setPhotoUrls(pet.getPhotoUrls()); // Mapear la lista de fotos
         dto.setSize(pet.getSize());
         dto.setGender(pet.getGender());
         dto.setEnergyLevel(pet.getEnergyLevel());
@@ -33,6 +35,10 @@ public class PetMapper {
         dto.setDewormed(pet.isDewormed());
         dto.setSterilized(pet.isSterilized());
         dto.setHistory(pet.getHistory());
+        
+        if (pet.getOwner() != null) {
+            dto.setOwnerId(pet.getOwner().getId());
+        }
 
         return dto;
     }

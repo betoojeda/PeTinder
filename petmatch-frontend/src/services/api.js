@@ -35,22 +35,17 @@ export const logout = async () => {
   }
 };
 
-/**
- * Obtiene los datos del usuario actual si hay una sesión activa (cookie válida).
- */
 export const getMe = async () => {
   try {
     const response = await apiClient.get('/auth/me');
     return response.data;
   } catch (error) {
-    // Si devuelve 401, es normal (no hay sesión), no es un error de aplicación.
     if (error.response && error.response.status === 401) {
       return null;
     }
     throw new Error('Error al verificar la sesión');
   }
 };
-
 
 // --- Funciones de la Aplicación ---
 
@@ -69,6 +64,51 @@ export const swipe = async (petId, type) => {
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Error al procesar el swipe');
+  }
+};
+
+export const uploadPetPhoto = async (petId, file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await apiClient.post(`/pets/${petId}/photos`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error al subir la foto');
+  }
+};
+
+// --- Funciones de Chat y Matches ---
+
+export const getMatches = async () => {
+  try {
+    const response = await apiClient.get('/matches'); 
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error al cargar los matches');
+  }
+};
+
+export const getMessagesForMatch = async (matchId) => {
+  try {
+    const response = await apiClient.get(`/messages/match/${matchId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error al cargar los mensajes');
+  }
+};
+
+export const sendMessage = async (matchId, senderUserId, text) => {
+  try {
+    const response = await apiClient.post('/messages', { matchId, senderUserId, text });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error al enviar el mensaje');
   }
 };
 

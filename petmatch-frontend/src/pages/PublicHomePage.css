@@ -1,8 +1,19 @@
-/* --- Contenedor Principal --- */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
+/* 1. Reset Básico y Estilos Generales */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 .public-homepage-container {
-  width: 100%;
-  color: #fff;
-  text-align: center;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
 }
 
 /* --- Video de Fondo --- */
@@ -28,207 +39,197 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5); /* Un poco menos oscuro para que el video se vea más */
   z-index: -1;
 }
 
-/* --- Header --- */
-.public-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 5%;
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: 10;
+/* 2. Estilos del Encabezado (Nav Bar) - ¡NUEVO DISEÑO! */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    margin: 20px; /* Margen para separarlo de los bordes */
+    width: calc(100% - 40px); /* Ancho menos los márgenes */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+
+    /* Efecto "Frosted Glass" */
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* Para Safari */
+    border-radius: 50px; /* Bordes muy redondeados para efecto "píldora" */
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.public-brand {
-  font-size: 1.8rem;
-  font-weight: bold;
+.logo {
+    font-family: 'Luckiest Guy', cursive; /* ¡NUEVA FUENTE! */
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-.public-nav-link, .public-nav-button {
-  margin-left: 20px;
-  text-decoration: none;
-  color: #fff;
-  font-weight: 500;
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre botones */
 }
 
-.public-nav-button.primary {
-  background-color: #ff5864;
-  padding: 10px 20px;
-  border-radius: 20px;
+.nav-links a {
+    text-decoration: none;
 }
 
-/* --- Sección Hero --- */
-.hero-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  padding: 0 20px;
+.nav-links .btn-login, .nav-links .btn-register {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
 }
 
-.hero-title {
-  font-size: 3.5rem;
-  font-weight: 700;
-  max-width: 800px;
-  line-height: 1.2;
-  margin-bottom: 20px;
+.btn-login {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333;
+    border: 1px solid transparent;
 }
 
-.hero-subtitle {
-  font-size: 1.2rem;
-  max-width: 600px;
-  margin-bottom: 40px;
-  opacity: 0.9;
+.btn-login:hover {
+    background-color: #fff;
+    transform: scale(1.05);
 }
 
-.hero-cta-button {
-  background-color: #ff5864;
-  color: #fff;
-  padding: 15px 35px;
-  border-radius: 30px;
-  text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  transition: transform 0.2s ease;
+.btn-register {
+    background-color: #e55;
+    color: #fff;
 }
 
-.hero-cta-button:hover {
-  transform: scale(1.05);
+.btn-register:hover {
+    background-color: #c44;
+    transform: scale(1.05);
 }
 
-/* --- Sección de Estadísticas --- */
-.stats-section {
-  padding: 40px 5%;
-  background-color: rgba(0, 0, 0, 0.2); /* Fondo semi-transparente */
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 20px;
+/* 3. Contenido Principal - Centrado y Espaciado */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    position: relative;
+    z-index: 1;
+    margin-top: 80px; /* Espacio para que no se solape con el header */
+}
+
+h1.main-title {
+    font-family: 'Luckiest Guy', cursive; /* ¡NUEVA FUENTE! */
+    font-size: 3.5em;
+    color: #fff;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+.image-container {
+    width: 100%;
+    max-width: 600px;
+    height: 300px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.btn-community {
+    padding: 15px 35px;
+    background-color: #ff69b4;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.btn-community:hover {
+    background-color: #e04a9e;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* 4. Sección de Estadísticas (Parte Inferior) */
+.stats-container {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    color: #fff;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .stat-item {
-  text-align: center;
+    text-align: center;
 }
 
-.stat-item h3 {
-  font-size: 2.5rem;
-  margin: 0;
-  color: #ff5864;
+.stat-number {
+    font-size: 1.8em;
+    font-weight: bold;
 }
 
-.stat-item p {
-  font-size: 1rem;
-  margin: 5px 0 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0.8;
+.stat-label {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    opacity: 0.8;
 }
 
-/* --- Sección "Cómo Funciona" --- */
-.how-it-works-section {
-  padding: 80px 5%;
-  background-color: #fff;
-  color: #333;
-}
+/* 5. Media Queries para Responsividad (Dispositivos Móviles) */
+@media (max-width: 768px) {
+    h1.main-title {
+        font-size: 2.5em;
+    }
 
-.how-it-works-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 50px;
-}
+    .subtitle {
+        font-size: 1em;
+        padding: 0 15px;
+    }
 
-.steps-container {
-  display: flex;
-  justify-content: space-around;
-  gap: 30px;
-  flex-wrap: wrap;
-}
+    .stats-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
 
-.step {
-  max-width: 300px;
-}
+    .header {
+        flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+        justify-content: center;
+        gap: 10px;
+        margin: 10px;
+        width: calc(100% - 20px);
+        border-radius: 20px;
+    }
 
-.step-icon {
-  font-size: 3rem;
-  margin-bottom: 20px;
-}
+    .logo {
+        width: 100%;
+        text-align: center;
+    }
 
-.step h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-/* --- Sección Demo Interactiva --- */
-.interactive-demo-section {
-    padding: 80px 5%;
-    background-color: #f9f9f9;
-    color: #333;
-}
-
-.interactive-demo-section h2 {
-    font-size: 2.5rem;
-    margin-bottom: 50px;
-}
-
-/* --- Sección Galería de Mascotas --- */
-.featured-pets-section {
-  padding: 80px 5%;
-  background-color: #fff;
-  color: #333;
-}
-
-.featured-pets-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 50px;
-}
-
-.gallery-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.pet-gallery-card {
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  position: relative;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.pet-gallery-card:hover {
-  transform: translateY(-10px);
-}
-
-.pet-gallery-card img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-}
-
-.pet-gallery-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 20px;
-  color: #fff;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-}
-
-.pet-gallery-info h3 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.pet-gallery-info p {
-  margin: 5px 0 0;
+    .nav-links {
+        justify-content: center;
+        width: 100%;
+    }
 }

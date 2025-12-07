@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,7 +21,7 @@ public class PetController {
     private final PetService petService;
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()") // Solo usuarios logueados pueden crear mascotas
+    @PreAuthorize("isAuthenticated()")
     public PetDto create(@Valid @RequestBody PetDto pet) {
         return petService.createPet(pet);
     }
@@ -31,7 +33,7 @@ public class PetController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')") // Solo admins pueden borrar
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable Long id) {
         petService.deletePet(id);
     }
@@ -49,5 +51,18 @@ public class PetController {
     @GetMapping("/owner/{ownerId}")
     public List<PetDto> byOwner(@PathVariable Long ownerId) {
         return petService.getPetsByOwner(ownerId);
+    }
+
+    @PostMapping("/{petId}/photos")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PetDto> uploadPhoto(
+            @PathVariable Long petId,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            PetDto updatedPet = petService.addPhotoToPet(petId, file);
+            return ResponseEntity.ok(updatedPet);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).build();
+        }
     }
 }

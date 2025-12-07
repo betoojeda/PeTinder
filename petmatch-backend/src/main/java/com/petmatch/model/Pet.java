@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "pets")
@@ -19,30 +21,34 @@ public class Pet {
     private Long id;
 
     private String name;
-    private String species; // e.g., Perro, Gato
+    private String species;
     private String breed;
     private int age;
     private String description;
-    private String photoUrl;
 
-    // Nuevos campos para una descripción más detallada
-    private String size; // e.g., Pequeño, Mediano, Grande
-    private String gender; // e.g., Macho, Hembra
-    private String energyLevel; // e.g., Bajo, Moderado, Alto
-    private String temperament; // e.g., Juguetón, Tranquilo, Sociable, Tímido
+    @ElementCollection(fetch = FetchType.EAGER) // Cargar las fotos junto con la mascota
+    @CollectionTable(name = "pet_photos", joinColumns = @JoinColumn(name = "pet_id"))
+    @Column(name = "photo_url")
+    @Builder.Default
+    private List<String> photoUrls = new ArrayList<>();
+
+    private String size;
+    private String gender;
+    private String energyLevel;
+    private String temperament;
 
     private boolean compatibleWithDogs;
     private boolean compatibleWithCats;
     private boolean compatibleWithChildren;
 
-    private String specialNeeds; // Cualquier necesidad especial (dieta, medicación, etc.)
-    private String trainingLevel; // e.g., Básico, Avanzado, Necesita entrenamiento
+    private String specialNeeds;
+    private String trainingLevel;
 
     private boolean isVaccinated;
     private boolean isDewormed;
     private boolean isSterilized;
 
-    private String history; // Breve historia o antecedentes de la mascota
+    private String history;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")

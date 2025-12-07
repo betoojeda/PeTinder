@@ -383,6 +383,25 @@ body {
   color: #ff69b4;
 }
 
+/* Estilo para el botón "Volver a la Página Principal" */
+.back-to-home-button {
+  display: block; /* Ocupa todo el ancho */
+  width: calc(100% - 2rem); /* Ajusta el ancho para el padding */
+  margin: 1.5rem auto 0 auto; /* Margen superior y centrado */
+  padding: 0.8rem 1.5rem;
+  background-color: #6c757d; /* Un color neutro */
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.back-to-home-button:hover {
+  background-color: #5a6268;
+}
+
+
 /* (El resto de animaciones y estilos de HomePage/Dashboard se mantienen igual) */
 @keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-20px); }

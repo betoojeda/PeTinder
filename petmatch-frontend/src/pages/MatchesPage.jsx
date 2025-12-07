@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { getMatches } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import { Link } from 'react-router-dom';
+import ChatWindow from '../components/ChatWindow';
+import './MatchesPage.css'; // Importaremos los nuevos estilos
 
 const MatchesPage = () => {
+  const { user } = useAuth();
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { token } = useAuth();
+  const [selectedMatch, setSelectedMatch] = useState(null);
 
   useEffect(() => {
     const fetchMatches = async () => {
-      if (!token) return;
       try {
-        // Asumimos que tienes un endpoint /api/matches que devuelve los matches del usuario autenticado
-        const response = await fetch('/api/matches', {
-          headers: { 'Authorization': `Bearer ${token}` },
-        });
-        if (!response.ok) {
-          throw new Error('Error al cargar los matches');
-        }
-        const data = await response.json();
-        setMatches(data);
+        const fetchedMatches = await getMatches();
+        setMatches(fetchedMatches);
       } catch (error) {
         console.error(error);
       } finally {
@@ -28,30 +23,45 @@ const MatchesPage = () => {
     };
 
     fetchMatches();
-  }, [token]);
+  }, []);
 
   if (loading) {
-    return <p>Cargando tus matches...</p>;
+    return <p className="matches-loading">Cargando tus matches...</p>;
   }
 
   return (
-    <div className="matches-container">
-      <h2>Tus Matches</h2>
-      <Link to="/">Volver a swippear</Link>
-      {matches.length > 0 ? (
-        <div className="matches-grid">
-          {matches.map((match) => (
-            <div key={match.id} className="match-card">
-              {/* Idealmente, el backend devolvería los detalles de las mascotas del match */}
-              <p>Match con Mascota ID: {match.petB}</p>
-              {/* <img src={match.petB.photoUrl} alt={match.petB.name} />
-              <p>{match.petB.name}</p> */}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>Aún no tienes matches. ¡Sigue swippeando!</p>
-      )}
+    <div className="matches-page-container">
+      <aside className="matches-list-sidebar">
+        <header>
+          <h2>Tus Matches</h2>
+        </header>
+        {matches.length > 0 ? (
+          <ul>
+            {matches.map((match) => {
+              // Determinar cuál es la otra mascota en el match
+              const otherPet = match.petA.ownerId === user.id ? match.petB : match.petA;
+              return (
+                <li 
+                  key={match.id} 
+                  onClick={() => setSelectedMatch(match)}
+                  className={selectedMatch?.id === match.id ? 'selected' : ''}
+                >
+                  <img src={otherPet.photoUrl || '/placeholder.jpg'} alt={otherPet.name} />
+                  <div className="match-info">
+                    <h4>{otherPet.name}</h4>
+                    <p>Último mensaje...</p> {/* Placeholder */}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="no-matches">Aún no tienes matches. ¡Sigue deslizando!</p>
+        )}
+      </aside>
+      <main className="chat-area">
+        <ChatWindow match={selectedMatch} />
+      </main>
     </div>
   );
 };

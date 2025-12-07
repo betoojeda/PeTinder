@@ -1,32 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { dogBreeds } from '../constants/breeds'; // Importar la lista de razas
+import { dogBreeds } from '../constants/breeds';
+import { uploadPetPhoto } from '../services/api'; // Importar la función de subida
+import toast from 'react-hot-toast';
 
-const PetForm = ({ pet, onClose }) => {
-  const { token } = useAuth();
+const PetForm = ({ pet, onClose, onSaveSuccess }) => { // Añadir onSaveSuccess
+  const { user } = useAuth(); // Usar user para obtener el ID del propietario
   const [formData, setFormData] = useState({
     name: '', type: 'Perro', breed: '', age: '', description: '',
-    photoUrl: '', size: '', gender: '', energyLevel: '', temperament: '',
+    photoUrls: [], // Cambiado a array
+    size: '', gender: '', energyLevel: '', temperament: '',
     compatibleWithDogs: false, compatibleWithCats: false, compatibleWithChildren: false,
     specialNeeds: '', trainingLevel: '', vaccinated: false, dewormed: false,
-    sterilized: false, history: '', ownerId: '',
+    sterilized: false, history: '', ownerId: user?.id || '', // Asignar ownerId por defecto
   });
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [filePreviews, setFilePreviews] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (pet) {
       setFormData({
         name: pet.name || '', type: pet.type || 'Perro', breed: pet.breed || '',
-        age: pet.age || '', description: pet.description || '', photoUrl: pet.photoUrl || '',
+        age: pet.age || '', description: pet.description || '', photoUrls: pet.photoUrls || [],
         size: pet.size || '', gender: pet.gender || '', energyLevel: pet.energyLevel || '',
         temperament: pet.temperament || '', compatibleWithDogs: pet.compatibleWithDogs || false,
         compatibleWithCats: pet.compatibleWithCats || false, compatibleWithChildren: pet.compatibleWithChildren || false,
         specialNeeds: pet.specialNeeds || '', trainingLevel: pet.trainingLevel || '',
         vaccinated: pet.vaccinated || false, dewormed: pet.dewormed || false,
         sterilized: pet.sterilized || false, history: pet.history || '',
-        ownerId: pet.ownerId || '',
+        ownerId: pet.ownerId || user?.id || '',
       });
+      // Si la mascota ya tiene URLs, las usamos como previews iniciales
+      setFilePreviews(pet.photoUrls || []);
+    } else {
+      // Para nuevas mascotas, asegurar que ownerId esté establecido
+      setFormData(prev => ({ ...prev, ownerId: user?.id || '' }));
     }
-  }, [pet]);
+  }, [pet, user]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -36,26 +47,67 @@ const PetForm = ({ pet, onClose }) => {
     }));
   };
 
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setSelectedFiles(files);
+    // Generar vistas previas para los archivos seleccionados
+    const newPreviews = files.map(file => URL.createObjectURL(file));
+    setFilePreviews(newPreviews);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = pet ? `/api/pets/${pet.id}` : '/api/pets';
-    const method = pet ? 'PUT' : 'POST';
+    setIsSubmitting(true);
+    toast.loading(pet ? 'Guardando cambios...' : 'Creando mascota...');
 
     try {
-      // Usar apiClient en lugar de fetch para consistencia
+      const url = pet ? `/api/pets/${pet.id}` : '/api/pets';
+      const method = pet ? 'PUT' : 'POST';
+
+      // 1. Crear/Actualizar la mascota (sin las nuevas fotos aún)
+      const petDataToSave = { ...formData };
+      // Si estamos actualizando, las photoUrls existentes ya están en formData.
+      // Si es nueva, photoUrls será un array vacío inicialmente.
       const response = await fetch(url, {
         method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(petDataToSave),
       });
 
-      if (!response.ok) throw new Error('Error al guardar la mascota');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al guardar la mascota');
+      }
+
+      const savedPet = await response.json();
+      let finalPet = savedPet;
+
+      // 2. Subir las nuevas fotos si hay
+      if (selectedFiles.length > 0) {
+        toast.loading('Subiendo fotos...', { id: 'uploading-photos' });
+        for (const file of selectedFiles) {
+          try {
+            finalPet = await uploadPetPhoto(savedPet.id, file);
+            // Actualizar formData con las nuevas URLs después de cada subida
+            setFormData(prev => ({ ...prev, photoUrls: finalPet.photoUrls }));
+          } catch (uploadError) {
+            toast.error(`Error al subir una foto: ${file.name}`);
+            console.error(`Error al subir ${file.name}:`, uploadError);
+            // Continuar con las otras fotos aunque una falle
+          }
+        }
+        toast.success('Fotos subidas correctamente!', { id: 'uploading-photos' });
+      }
+
+      toast.success(pet ? 'Mascota actualizada con éxito!' : 'Mascota creada con éxito!');
+      onSaveSuccess(finalPet); // Llamar a la función de éxito con la mascota final
       onClose();
     } catch (error) {
+      toast.error(error.message || 'Ocurrió un error inesperado.');
       console.error(error);
+    } finally {
+      setIsSubmitting(false);
+      toast.dismiss(); // Cerrar cualquier toast de carga restante
     }
   };
 
@@ -119,9 +171,19 @@ const PetForm = ({ pet, onClose }) => {
                 <option value="Alto">Alto</option>
             </select>
         </label>
-        <label>URL de la Foto: <input type="text" name="photoUrl" value={formData.photoUrl} onChange={handleChange} /></label>
         <label>Dueño ID: <input type="number" name="ownerId" value={formData.ownerId} onChange={handleChange} disabled={!!pet} required={!pet} /></label>
         
+        {/* Campo de subida de fotos */}
+        <div style={{ gridColumn: '1 / -1' }}>
+          <label>Fotos de la Mascota:</label>
+          <input type="file" multiple accept="image/*" onChange={handleFileChange} />
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
+            {filePreviews.map((url, index) => (
+              <img key={index} src={url} alt={`Preview ${index}`} style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '5px' }} />
+            ))}
+          </div>
+        </div>
+
         <label style={{ gridColumn: '1 / -1' }}>Descripción: <textarea name="description" value={formData.description} onChange={handleChange}></textarea></label>
         
         <div style={{ gridColumn: '1 / -1', display: 'flex', gap: '20px' }}>
@@ -136,8 +198,8 @@ const PetForm = ({ pet, onClose }) => {
         </div>
 
         <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
-            <button type="button" onClick={onClose} className="cancel-button">Cancelar</button>
-            <button type="submit" className="submit-button">{pet ? 'Guardar Cambios' : 'Añadir Mascota'}</button>
+            <button type="button" onClick={onClose} className="cancel-button" disabled={isSubmitting}>Cancelar</button>
+            <button type="submit" className="submit-button" disabled={isSubmitting}>{isSubmitting ? 'Guardando...' : (pet ? 'Guardar Cambios' : 'Añadir Mascota')}</button>
         </div>
       </form>
     </div>

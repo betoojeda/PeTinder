@@ -20,6 +20,9 @@ const AdminDashboardPage = () => {
             <Link to="/admin/stats" className="admin-nav-button">
               Ver Estadísticas
             </Link>
+            <Link to="/admin/logs" className="admin-nav-button">
+              Ver Log de Errores
+            </Link>
           </nav>
         </div>
       </div>

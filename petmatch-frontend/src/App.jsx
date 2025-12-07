@@ -19,7 +19,8 @@ import MatchesPage from './pages/MatchesPage';
 const AdminDashboardPage = React.lazy(() => import('./pages/admin/AdminDashboardPage'));
 const UsersListPage = React.lazy(() => import('./pages/admin/UsersListPage'));
 const PetManagementPage = React.lazy(() => import('./pages/admin/PetManagementPage'));
-const StatsPage = React.lazy(() => import('./pages/admin/StatsPage')); // Nueva página
+const StatsPage = React.lazy(() => import('./pages/admin/StatsPage'));
+const ErrorLogPage = React.lazy(() => import('./pages/admin/ErrorLogPage')); // Nueva página
 
 // --- Componentes de Ruta ---
 import ProtectedRoute from './components/ProtectedRoute';
@@ -70,7 +71,8 @@ function AppRoutes() {
           <Route index element={<AdminDashboardPage />} />
           <Route path="users" element={<UsersListPage />} />
           <Route path="pets" element={<PetManagementPage />} />
-          <Route path="stats" element={<StatsPage />} /> {/* Nueva ruta */}
+          <Route path="stats" element={<StatsPage />} />
+          <Route path="logs" element={<ErrorLogPage />} /> {/* Nueva ruta */}
         </Route>
 
         <Route path="*" element={<Navigate to="/" />} />

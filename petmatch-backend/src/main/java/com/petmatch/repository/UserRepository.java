@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT new com.petmatch.dto.UserRegistrationStatsDto(CAST(u.createdAt AS java.time.LocalDate), COUNT(u.id)) " +
            "FROM User u " +
-           "WHERE u.createdAt >= CURRENT_DATE - 30 " +
+           "WHERE CAST(u.createdAt AS java.time.LocalDate) >= FUNCTION('DATE_ADD', CURRENT_DATE, -30, 'DAY') " +
            "GROUP BY CAST(u.createdAt AS java.time.LocalDate) " +
            "ORDER BY CAST(u.createdAt AS java.time.LocalDate) ASC")
     List<UserRegistrationStatsDto> findUserRegistrationStatsForLast30Days();
