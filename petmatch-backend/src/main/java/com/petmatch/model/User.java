@@ -24,14 +24,14 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    private String name; // Nombre
-    private String lastName; // Apellido
+    private String name;
+    private String lastName;
 
-    private String gender; // Género
-    private Integer numberOfPets; // Cuántos perros tiene
+    private String gender;
+    private Integer numberOfPets;
 
-    @Lob // Para textos largos
-    private String profileDescription; // Descripción para su perfil
+    @Column(columnDefinition = "TEXT") // Usar TEXT en lugar de LOB
+    private String profileDescription;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

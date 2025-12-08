@@ -5,8 +5,8 @@ import '../App.css';
 
 const AboutPage = () => {
   return (
-    <div className="about-page-container">
-      <div className="about-content">
+    <div className="page-container"> {/* Usar el contenedor de página genérico */}
+      <div className="form-card"> {/* Reutilizar el estilo de tarjeta */}
         <img src={profilePic} alt="Humberto Ojeda" className="profile-picture" />
         <h1>Acerca de PetMatch</h1>
         <p>
@@ -22,7 +22,7 @@ const AboutPage = () => {
           Puedes encontrar más sobre mi trabajo en mi <a href="[Tu-URL-de-LinkedIn]" target="_blank" rel="noopener noreferrer">perfil de LinkedIn</a> o
           en mi <a href="[Tu-URL-de-GitHub]" target="_blank" rel="noopener noreferrer">repositorio de GitHub</a>.
         </p>
-        <Link to="/" className="back-home-button">Volver al Inicio</Link>
+        <Link to="/" className="back-button">Volver al Inicio</Link>
       </div>
     </div>
   );

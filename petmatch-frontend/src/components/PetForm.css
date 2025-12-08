@@ -1,0 +1,87 @@
+/* Usar los estilos genéricos de form-card */
+.pet-form {
+  padding: 0; /* El padding ya está en el modal-content */
+}
+
+.pet-form h3 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
+
+.pet-form form {
+  display: contents; /* El formulario no tiene layout propio, se lo da el grid */
+}
+
+.pet-form .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.pet-form .input-group,
+.pet-form .checkbox-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.pet-form .full-width {
+  grid-column: 1 / -1;
+}
+
+.pet-form .checkbox-group {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.pet-form .checkbox-group label {
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.image-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.image-previews img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-actions .main-button,
+.form-actions .cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.form-actions .cancel-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.form-actions .cancel-button:hover {
+  background-color: #5a6268;
+}

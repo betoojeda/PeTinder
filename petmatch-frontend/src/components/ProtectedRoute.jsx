@@ -3,14 +3,19 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
-  if (!isAuthenticated) {
-    // Si no está autenticado, redirige al login
-    return <Navigate to="/login" replace />;
+  // Mientras se verifica la autenticación, no renderizar nada para evitar parpadeos
+  if (isLoading) {
+    return null;
   }
 
-  // Si está autenticado, muestra el contenido de la ruta (HomePage en nuestro caso)
+  if (!isAuthenticated) {
+    // Si no está autenticado, redirige a la página de inicio pública
+    return <Navigate to="/" replace />;
+  }
+
+  // Si está autenticado, muestra el contenido de la ruta protegida
   return <Outlet />;
 };
 

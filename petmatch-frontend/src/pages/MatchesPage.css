@@ -20,8 +20,16 @@
 }
 
 .matches-list-sidebar h2 {
-  margin: 0;
+  margin: 10px 0 0 0; /* Espacio después del enlace de volver */
   font-size: 1.5rem;
+}
+
+.back-to-dashboard-link {
+  display: block;
+  margin-bottom: 15px;
+  text-decoration: none;
+  color: #ff5864;
+  font-weight: bold;
 }
 
 .matches-list-sidebar ul {

@@ -1,0 +1,86 @@
+.my-pets-container {
+  width: 100%;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  margin-top: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.my-pets-container h3 {
+  color: #fff;
+  text-align: left;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.my-pets-list {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto; /* Permite scroll horizontal */
+  padding-bottom: 10px; /* Espacio para la barra de scroll */
+}
+
+/* Estilizar la barra de scroll */
+.my-pets-list::-webkit-scrollbar {
+  height: 8px;
+}
+.my-pets-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.my-pets-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+.my-pets-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.my-pet-card {
+  flex: 0 0 120px; /* No crece, no se encoge, base de 120px */
+  height: 120px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.my-pet-card:hover {
+  transform: scale(1.05);
+}
+
+.my-pet-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.my-pet-card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+  padding: 10px 5px;
+  text-align: center;
+}
+
+.my-pet-card-info h4 {
+  color: #fff;
+  margin: 0;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.my-pets-loading, .my-pets-empty {
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  margin-top: 20px;
+}

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Importar Link
 import { getMatches } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import ChatWindow from '../components/ChatWindow';
-import './MatchesPage.css'; // Importaremos los nuevos estilos
+import './MatchesPage.css';
 
 const MatchesPage = () => {
   const { user } = useAuth();
@@ -33,12 +34,14 @@ const MatchesPage = () => {
     <div className="matches-page-container">
       <aside className="matches-list-sidebar">
         <header>
+          <Link to="/dashboard" className="back-to-dashboard-link">
+            &larr; Volver al Dashboard
+          </Link>
           <h2>Tus Matches</h2>
         </header>
         {matches.length > 0 ? (
           <ul>
             {matches.map((match) => {
-              // Determinar cuál es la otra mascota en el match
               const otherPet = match.petA.ownerId === user.id ? match.petB : match.petA;
               return (
                 <li 
@@ -46,10 +49,10 @@ const MatchesPage = () => {
                   onClick={() => setSelectedMatch(match)}
                   className={selectedMatch?.id === match.id ? 'selected' : ''}
                 >
-                  <img src={otherPet.photoUrl || '/placeholder.jpg'} alt={otherPet.name} />
+                  <img src={otherPet.photoUrls && otherPet.photoUrls.length > 0 ? otherPet.photoUrls[0] : '/placeholder.jpg'} alt={otherPet.name} />
                   <div className="match-info">
                     <h4>{otherPet.name}</h4>
-                    <p>Último mensaje...</p> {/* Placeholder */}
+                    <p>Último mensaje...</p>
                   </div>
                 </li>
               );

@@ -3,18 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/LogoSinFondo.png';
 import '../App.css';
+import toast from 'react-hot-toast';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    lastName: '',
-    email: '',
-    password: '',
-    gender: '',
-    numberOfPets: 0,
-    profileDescription: '',
+    name: '', lastName: '', email: '', password: '',
+    gender: '', numberOfPets: 0, profileDescription: '',
   });
-  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -25,65 +21,38 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setIsLoading(true);
     try {
       await register(formData);
-      navigate('/');
+      toast.success('¡Registro exitoso! Bienvenido a PetMatch.');
+      navigate('/dashboard');
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Error al registrarse. Inténtalo de nuevo.';
-      setError(errorMessage);
-      console.error(err);
+      toast.error(err.message || 'Error al registrarse. Inténtalo de nuevo.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="auth-container light-theme">
-      <div className="auth-form-wrapper">
-        <img src={logo} alt="petmatch Logo" className="auth-logo" />
-        <form onSubmit={handleSubmit} className="auth-form">
+    <div className="page-container">
+      <div className="form-card">
+        <img src={logo} alt="petmatch Logo" className="form-logo" />
+        <form onSubmit={handleSubmit}>
           <h2>Crear Cuenta</h2>
-          {error && <p className="error-message">{error}</p>}
           <div className="input-group">
-            <input
-              type="text"
-              name="name"
-              placeholder="Nombre"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
+            <input type="text" name="name" placeholder="Nombre" value={formData.name} onChange={handleChange} required disabled={isLoading} />
           </div>
           <div className="input-group">
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Apellido"
-              value={formData.lastName}
-              onChange={handleChange}
-            />
+            <input type="text" name="lastName" placeholder="Apellido" value={formData.lastName} onChange={handleChange} disabled={isLoading} />
           </div>
           <div className="input-group">
-            <input
-              type="email"
-              name="email"
-              placeholder="Correo electrónico"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+            <input type="email" name="email" placeholder="Correo electrónico" value={formData.email} onChange={handleChange} required disabled={isLoading} />
           </div>
           <div className="input-group">
-            <input
-              type="password"
-              name="password"
-              placeholder="Contraseña"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            <input type="password" name="password" placeholder="Contraseña" value={formData.password} onChange={handleChange} required disabled={isLoading} />
           </div>
           <div className="input-group">
-            <select name="gender" value={formData.gender} onChange={handleChange}>
+            <select name="gender" value={formData.gender} onChange={handleChange} disabled={isLoading}>
               <option value="">Selecciona tu género</option>
               <option value="Masculino">Masculino</option>
               <option value="Femenino">Femenino</option>
@@ -92,28 +61,18 @@ const RegisterPage = () => {
           </div>
           <div className="input-group">
             <label htmlFor="numberOfPets">¿Cuántas mascotas tienes?</label>
-            <input
-              type="number"
-              id="numberOfPets"
-              name="numberOfPets"
-              value={formData.numberOfPets}
-              onChange={handleChange}
-              min="0"
-            />
+            <input type="number" id="numberOfPets" name="numberOfPets" value={formData.numberOfPets} onChange={handleChange} min="0" disabled={isLoading} />
           </div>
           <div className="input-group">
-            <textarea
-              name="profileDescription"
-              placeholder="Cuéntanos un poco sobre ti..."
-              value={formData.profileDescription}
-              onChange={handleChange}
-            ></textarea>
+            <textarea name="profileDescription" placeholder="Cuéntanos un poco sobre ti..." value={formData.profileDescription} onChange={handleChange} disabled={isLoading}></textarea>
           </div>
-          <button type="submit" className="auth-button">Registrarse</button>
-          <p className="auth-switch">
+          <button type="submit" className="main-button" disabled={isLoading}>
+            {isLoading ? 'Registrando...' : 'Registrarse'}
+          </button>
+          <p className="form-switch">
             ¿Ya tienes cuenta? <Link to="/login">Inicia Sesión</Link>
           </p>
-          <Link to="/" className="back-to-home-button">Volver a la Página Principal</Link>
+          <Link to="/" className="back-button">Volver a la Página Principal</Link>
         </form>
       </div>
     </div>

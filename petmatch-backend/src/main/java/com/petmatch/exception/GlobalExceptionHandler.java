@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -38,10 +39,23 @@ public class GlobalExceptionHandler {
         );
     }
 
+    // Captura errores de credenciales incorrectas
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponseDto handleBadCredentialsException(BadCredentialsException ex, HttpServletRequest request) {
+        log.warn("Failed login attempt for path {}: {}", request.getRequestURI(), ex.getMessage());
+        return new ErrorResponseDto(
+                Instant.now(),
+                HttpStatus.UNAUTHORIZED.value(),
+                "Unauthorized",
+                "Credenciales incorrectas. Por favor, verifica tu correo y contraseña.",
+                request.getRequestURI()
+        );
+    }
+
     // Captura cualquier otra excepción no controlada
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleAllExceptions(Exception ex, HttpServletRequest request) {
-        // Loguea el error completo en el archivo de logs
         log.error("Unhandled exception caught: {} on path {}", ex.getMessage(), request.getRequestURI(), ex);
 
         ErrorResponseDto errorResponse = new ErrorResponseDto(

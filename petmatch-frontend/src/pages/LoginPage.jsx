@@ -2,60 +2,40 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/LogoSinFondo.png';
-import logoWatermark from '../assets/LogoSinFondo.png';
 import '../App.css';
-
-const dogImages = [
-  'https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb?q=80&w=1932&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2069&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=1886&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?q=80&w=1887&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?q=80&w=1885&auto=format&fit=crop'
-];
+import toast from 'react-hot-toast';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setIsLoading(true);
     try {
       const { role } = await login(email, password);
+      toast.success('¡Bienvenido de nuevo!');
       if (role === 'ADMIN') {
         navigate('/admin');
       } else {
         navigate('/dashboard');
       }
     } catch (err) {
-      setError('Error al iniciar sesión. Revisa tus credenciales.');
-      console.error(err);
+      toast.error(err.message || 'Error al iniciar sesión. Revisa tus credenciales.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-background">
-        <img src={logoWatermark} className="auth-bg-logo" alt="Watermark" />
-        <div className="background-carousel-login">
-          {dogImages.map((img, index) => (
-            <div
-              key={index}
-              className="carousel-image-login"
-              style={{ backgroundImage: `url(${img})` }}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="auth-form-wrapper">
-        <img src={logo} alt="petmatch Logo" className="auth-logo" />
-        <form onSubmit={handleSubmit} className="auth-form">
+    <div className="page-container">
+      <div className="form-card">
+        <img src={logo} alt="petmatch Logo" className="form-logo" />
+        <form onSubmit={handleSubmit}>
           <h2>Iniciar Sesión</h2>
-          {error && <p className="error-message">{error}</p>}
           <div className="input-group">
             <input
               type="email"
@@ -63,6 +43,7 @@ const LoginPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
           <div className="input-group">
@@ -72,16 +53,19 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
-          <button type="submit" className="auth-button">Entrar</button>
-          <p className="auth-switch">
+          <button type="submit" className="main-button" disabled={isLoading}>
+            {isLoading ? 'Entrando...' : 'Entrar'}
+          </button>
+          <p className="form-switch">
             ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
           </p>
-          <p className="forgot-password" style={{ marginTop: '1rem' }}>
+          <p className="form-switch" style={{ marginTop: '1rem' }}>
             <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
           </p>
-          <Link to="/" className="back-to-home-button">Volver a la Página Principal</Link>
+          <Link to="/" className="back-button">Volver a la Página Principal</Link>
         </form>
       </div>
     </div>

@@ -1,15 +1,18 @@
 spring:
+  main:
+    banner-mode: "console"
   datasource:
     url: jdbc:postgresql://localhost:5432/petmatchdb
     username: petmatch
     password: petmatch123
   jpa:
+    open-in-view: false # Desactiva la advertencia y es una mejor práctica
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # No es necesario especificar el dialecto, Hibernate lo detecta
   jackson:
     serialization:
       indent_output: true
@@ -18,13 +21,15 @@ server:
   port: 8080
 
 jwt:
-  secret: 12345678901234567890123456789012
-  expiration: 86400000
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION}
 
 logging:
   level:
-    root: INFO
+    root: INFO # Nivel por defecto INFO, más limpio que WARN para el arranque
     com.petmatch: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: ERROR # Oculta las advertencias y logs de DEBUG de Hibernate
 
 # Configuración de Cloudinary
 cloudinary:

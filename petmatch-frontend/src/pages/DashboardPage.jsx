@@ -1,19 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import TinderStack from '../components/TinderStack';
+import PetForm from '../components/PetForm';
+import MyPetsList from '../components/MyPetsList';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/LogoSinFondo.png'; // Importar el logo
 import '../App.css';
 
 const backgroundImages = [
-  'https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=1974&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=1935&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=1964&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1592194991134-93349f4a79de?q=80&w=1887&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1552053831-71594a27632d?q=80&w=1862&auto=format&fit=crop'
+  'https://images.unsplash.com/photo-1505628346881-b72b27e84530?q=80&w=1932&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1519052537078-e6302a4968d4?q=80&w=1935&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?q=80&w=1964&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1573865526739-10659fec78a5?q=80&w=1935&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?q=80&w=1935&auto=format&fit=crop'
 ];
 
 const DashboardPage = () => {
   const { logout, isAdmin } = useAuth();
+  const [isPetFormOpen, setIsPetFormOpen] = useState(false);
+  const [editingPet, setEditingPet] = useState(null);
+  const [tinderStackKey, setTinderStackKey] = useState(Date.now());
+
+  const handlePetSaveSuccess = () => {
+    setTinderStackKey(Date.now());
+  };
+
+  const openPetFormForEdit = (pet) => {
+    setEditingPet(pet);
+    setIsPetFormOpen(true);
+  };
+
+  const openPetFormForCreate = () => {
+    setEditingPet(null);
+    setIsPetFormOpen(true);
+  };
+
+  const closePetForm = () => {
+    setIsPetFormOpen(false);
+    setEditingPet(null);
+  };
 
   return (
     <div className="homepage-container">
@@ -30,15 +55,16 @@ const DashboardPage = () => {
       <header className="homepage-header">
         <div className="nav-left">
           <Link to="/matches" className="nav-link">Mis Matches</Link>
-          {/*
+          <button onClick={openPetFormForCreate} className="nav-link">
+            Añadir Mascota
+          </button>
           {isAdmin && (
             <Link to="/admin" className="nav-link admin-link">
               Admin
             </Link>
           )}
-          */}
         </div>
-        <h1 className="brand-title">PetMatch</h1>
+        <img src={logo} alt="PetMatch Logo" className="header-logo" /> {/* Logo en lugar de texto */}
         <div className="nav-right">
           <button onClick={logout} className="logout-button">
             Cerrar Sesión
@@ -52,9 +78,22 @@ const DashboardPage = () => {
             <h2>Encuentra la Pareja Perfecta</h2>
             <p>Desliza y conecta con otros perritos</p>
           </div>
-          <TinderStack />
+          <TinderStack key={tinderStackKey} />
+          <MyPetsList key={tinderStackKey + 1} onEditPet={openPetFormForEdit} />
         </div>
       </main>
+
+      {isPetFormOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <PetForm 
+              pet={editingPet}
+              onClose={closePetForm}
+              onSaveSuccess={handlePetSaveSuccess}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

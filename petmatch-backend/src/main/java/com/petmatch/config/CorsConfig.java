@@ -13,13 +13,11 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        // ⛔ NO usar .allowedOrigins("*")
-                        // ✔ Usar patterns
-                        .allowedOriginPatterns("*")
-                        .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
+                registry.addMapping("/api/**") // Aplicar a todas las rutas de /api
+                        .allowedOrigins("http://localhost:3000") // Permitir el origen del frontend
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowCredentials(true);
+                        .allowCredentials(true); // ¡MUY IMPORTANTE para las cookies!
             }
         };
     }

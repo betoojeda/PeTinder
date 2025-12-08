@@ -83,6 +83,18 @@ export const uploadPetPhoto = async (petId, file) => {
   }
 };
 
+/**
+ * Obtiene las mascotas de un propietario específico.
+ */
+export const getPetsByOwner = async (ownerId) => {
+  try {
+    const response = await apiClient.get(`/pets/owner/${ownerId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Error al cargar tus mascotas');
+  }
+};
+
 // --- Funciones de Chat y Matches ---
 
 export const getMatches = async () => {

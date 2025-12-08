@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getMessagesForMatch, sendMessage } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 import './ChatWindow.css';
 
 const ChatWindow = ({ match }) => {
@@ -11,12 +12,10 @@ const ChatWindow = ({ match }) => {
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
 
-  // Efecto para hacer scroll hacia el último mensaje
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Efecto para cargar los mensajes cuando cambia el match seleccionado
   useEffect(() => {
     if (!match) return;
 
@@ -28,6 +27,7 @@ const ChatWindow = ({ match }) => {
         setMessages(fetchedMessages);
       } catch (err) {
         setError('No se pudieron cargar los mensajes.');
+        toast.error('No se pudieron cargar los mensajes.');
         console.error(err);
       } finally {
         setLoading(false);
@@ -41,13 +41,27 @@ const ChatWindow = ({ match }) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
 
+    const tempId = Date.now(); // ID temporal para la key
+    const sentMessage = {
+      id: tempId,
+      matchId: match.id,
+      senderUserId: user.id,
+      text: newMessage,
+      createdAt: new Date().toISOString(),
+    };
+
+    // Añadir el mensaje a la UI inmediatamente para una experiencia fluida
+    setMessages(prevMessages => [...prevMessages, sentMessage]);
+    setNewMessage('');
+
     try {
-      const sentMessage = await sendMessage(match.id, user.id, newMessage);
-      setMessages(prevMessages => [...prevMessages, sentMessage]);
-      setNewMessage('');
+      // Enviar el mensaje al backend en segundo plano
+      await sendMessage(match.id, user.id, newMessage);
     } catch (err) {
+      toast.error('No se pudo enviar el mensaje.');
       console.error('Error al enviar mensaje:', err);
-      // Podríamos mostrar un toast de error aquí
+      // Opcional: Marcar el mensaje como no enviado en la UI
+      setMessages(prev => prev.filter(msg => msg.id !== tempId));
     }
   };
 
@@ -67,13 +81,12 @@ const ChatWindow = ({ match }) => {
     return <div className="chat-window placeholder"><h3>{error}</h3></div>;
   }
 
-  // Determinar con qué mascota estamos chateando
   const otherPet = match.petA.ownerId === user.id ? match.petB : match.petA;
 
   return (
     <div className="chat-window">
       <header className="chat-header">
-        <img src={otherPet.photoUrl || '/placeholder.jpg'} alt={otherPet.name} />
+        <img src={otherPet.photoUrls && otherPet.photoUrls.length > 0 ? otherPet.photoUrls[0] : '/placeholder.jpg'} alt={otherPet.name} />
         <h3>{otherPet.name}</h3>
       </header>
       <div className="messages-list">

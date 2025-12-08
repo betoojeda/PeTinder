@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pets")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class PetController {
 

@@ -10,7 +10,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
@@ -36,8 +34,6 @@ public class AdminController {
     public List<UserAdminDto> getAllUsers() {
         return adminService.getAllUsers();
     }
-
-
 
     @GetMapping("/pets")
     public List<PetDto> getAllPets() {
@@ -56,7 +52,6 @@ public class AdminController {
             return ResponseEntity.ok("El archivo de log de errores no existe o está vacío.");
         }
         try {
-            // Leemos las últimas 200 líneas para no sobrecargar la respuesta
             List<String> lines = Files.readAllLines(Paths.get(ERROR_LOG_PATH));
             Collections.reverse(lines);
             String content = lines.stream().limit(200).collect(Collectors.joining("\n"));

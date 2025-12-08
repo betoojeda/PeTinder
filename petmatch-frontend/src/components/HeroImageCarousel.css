@@ -1,9 +1,9 @@
 .hero-carousel-container {
   position: relative;
   width: 100%;
-  max-width: 600px; /* Ancho máximo del carrusel */
-  height: 300px; /* Altura fija del carrusel */
-  margin-bottom: 30px; /* Espacio debajo del carrusel */
+  max-width: 600px;
+  height: 300px;
+  margin-bottom: 30px;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
@@ -16,8 +16,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center; /* ¡CLAVE! Asegura que la imagen se centre */
   opacity: 0;
-  transition: opacity 1s ease-in-out; /* Transición suave entre imágenes */
+  transition: opacity 1s ease-in-out;
 }
 
 .hero-carousel-image.active {
