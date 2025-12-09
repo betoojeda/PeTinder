@@ -4,20 +4,15 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
 COPY . .
-# Pasar la URL de la API como argumento de construcción a Vite
-ARG VITE_REACT_APP_API_URL
-ENV VITE_REACT_APP_API_URL=${VITE_REACT_APP_API_URL}
 RUN npm run build
 
 # Etapa 2: Servir la aplicación con Nginx
 FROM nginx:stable-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
-# Copiar la configuración de Nginx y el script de inicio
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY start.sh /start.sh
-RUN chmod +x /start.sh # Dar permisos de ejecución al script
 
-EXPOSE 80
+# Copiar AMBOS archivos de configuración
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.prod.conf /etc/nginx/nginx.prod.conf
 
-# Ejecutar el script de inicio
-CMD ["/start.sh"]
+# El CMD ahora es un script que elige qué configuración usar
+CMD /bin/sh -c "if [ -n \"$BACKEND_URL\" ]; then envsubst '\\\$BACKEND_URL' < /etc/nginx/nginx.prod.conf > /etc/nginx/conf.d/default.conf; else cp /etc/nginx/nginx.conf /etc/nginx/conf.d/default.conf; fi && nginx -g 'daemon off;'"
