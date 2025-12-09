@@ -94,7 +94,8 @@ public class AuthService {
         PasswordResetToken passwordResetToken = new PasswordResetToken(token, user);
         tokenRepository.save(passwordResetToken);
 
-        emailService.sendPasswordResetEmail(user.getEmail(), token);
+        // emailService.sendPasswordResetEmail(user.getEmail(), token); // Desactivado temporalmente
+        log.info("Password reset email sending is currently disabled.");
     }
 
     public void resetPassword(String token, String newPassword) {
