@@ -12,8 +12,12 @@ RUN npm run build
 # Etapa 2: Servir la aplicación con Nginx
 FROM nginx:stable-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
-# Copiar la plantilla de configuración de Nginx
-COPY nginx.conf /etc/nginx/templates/default.conf.template
+# Copiar la configuración de Nginx y el script de inicio
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY start.sh /start.sh
+RUN chmod +x /start.sh # Dar permisos de ejecución al script
 
-# El CMD ahora es un script que primero procesa la plantilla y luego inicia Nginx
-CMD /bin/sh -c "envsubst '__BACKEND_URL__' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+EXPOSE 80
+
+# Ejecutar el script de inicio
+CMD ["/start.sh"]
