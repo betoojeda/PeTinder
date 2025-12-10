@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -36,7 +37,8 @@ public class FeedService {
         log.info("Fetching personalized feed for user ID: {}, page: {}, size: {}", userId, page, size);
 
         // Obtener los IDs de las mascotas en las que el usuario ya ha interactuado
-        Set<Long> swipedPetIds = swipeRepository.findAllSwipedPetIdsByUser(userId);
+        // Lo convertimos a un HashSet para asegurarnos de que sea mutable.
+        Set<Long> swipedPetIds = new HashSet<>(swipeRepository.findAllSwipedPetIdsByUser(userId));
         log.debug("User ID: {} has swiped on {} pets", userId, swipedPetIds.size());
 
         // Si el conjunto está vacío, añadimos un valor que no existirá para evitar errores SQL
