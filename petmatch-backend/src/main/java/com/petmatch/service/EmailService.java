@@ -3,6 +3,7 @@ package com.petmatch.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     public void sendPasswordResetEmail(String to, String token) {
         log.info("Sending password reset email to: {}", to);
         try {
@@ -22,7 +26,7 @@ public class EmailService {
             message.setTo(to);
             message.setSubject("Recuperación de Contraseña - PetMatch");
             message.setText("Para resetear tu contraseña, haz clic en el siguiente enlace: \n"
-                    + "http://localhost:3000/reset-password?token=" + token); // URL del frontend
+                    + frontendUrl + "/reset-password?token=" + token); // URL del frontend
             mailSender.send(message);
             log.info("Password reset email sent successfully to: {}", to);
         } catch (Exception e) {

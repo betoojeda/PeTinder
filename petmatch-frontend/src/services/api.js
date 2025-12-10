@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+// Lee la URL base de las variables de entorno de Vite.
+// El fallback '/api' se usa para el proxy de desarrollo de Vite.
+const baseURL = import.meta.env.VITE_API_URL || '/api';
+
 const apiClient = axios.create({
-  baseURL: '/api',
+  baseURL: baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
