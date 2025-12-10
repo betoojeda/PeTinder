@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/LogoSinFondo.png';
-import '../App.css';
+import '../styles/auth.css'; // Importar el nuevo CSS de autenticación
 import toast from 'react-hot-toast';
-import LoadingModal from '../components/LoadingModal'; // Importar el modal de carga
+import LoadingModal from '../components/LoadingModal';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -37,10 +37,10 @@ const RegisterPage = () => {
   return (
     <>
       {isLoading && <LoadingModal message="Creando tu cuenta..." />}
-      <div className="page-container">
-        <div className="form-card">
-          <img src={logo} alt="petmatch Logo" className="form-logo" />
-          <form onSubmit={handleSubmit}>
+      <div className="auth-container">
+        <div className="auth-form-wrapper">
+          <img src={logo} alt="petmatch Logo" className="auth-logo" />
+          <form onSubmit={handleSubmit} className="auth-form">
             <h2>Crear Cuenta</h2>
             <div className="input-group">
               <input type="text" name="name" placeholder="Nombre" value={formData.name} onChange={handleChange} required disabled={isLoading} />
@@ -69,13 +69,13 @@ const RegisterPage = () => {
             <div className="input-group">
               <textarea name="profileDescription" placeholder="Cuéntanos un poco sobre ti..." value={formData.profileDescription} onChange={handleChange} disabled={isLoading}></textarea>
             </div>
-            <button type="submit" className="main-button" disabled={isLoading}>
+            <button type="submit" className="auth-button" disabled={isLoading}>
               {isLoading ? 'Registrando...' : 'Registrarse'}
             </button>
-            <p className="form-switch">
+            <p className="auth-switch">
               ¿Ya tienes cuenta? <Link to="/login">Inicia Sesión</Link>
             </p>
-            <Link to="/" className="back-button">Volver a la Página Principal</Link>
+            <Link to="/" className="back-to-home-button">Volver a la Página Principal</Link>
           </form>
         </div>
       </div>

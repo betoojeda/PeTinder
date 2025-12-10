@@ -1,87 +1,109 @@
-/* Usar los estilos genéricos de form-card */
-.pet-form {
-  padding: 0; /* El padding ya está en el modal-content */
+/* Estilo de tarjeta para el formulario de mascota */
+.pet-form-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 550px; /* Un poco más ancho para el grid */
+  margin: auto;
 }
 
-.pet-form h3 {
+.pet-form-card h2 {
   text-align: center;
+  margin-bottom: 1.5rem;
   color: #333;
-  margin-bottom: 25px;
-  font-size: 1.8rem;
+  font-size: 2rem;
 }
 
-.pet-form form {
-  display: contents; /* El formulario no tiene layout propio, se lo da el grid */
+.pet-form-card form {
+  display: contents;
 }
 
-.pet-form .form-grid {
+.pet-form-card .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 1rem 1.5rem;
 }
 
-.pet-form .input-group,
-.pet-form .checkbox-group {
-  display: flex;
-  flex-direction: column;
+.pet-form-card .input-group {
+  text-align: left;
 }
 
-.pet-form .full-width {
+.pet-form-card .input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: bold;
+}
+
+.pet-form-card input,
+.pet-form-card select,
+.pet-form-card textarea {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.pet-form-card .full-width {
   grid-column: 1 / -1;
 }
 
-.pet-form .checkbox-group {
-  flex-direction: row;
+.pet-form-card .checkbox-group {
+  display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-.pet-form .checkbox-group label {
+.pet-form-card .checkbox-group label {
   font-weight: normal;
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.image-previews {
+.pet-form-card .image-previews {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
 }
 
-.image-previews img {
-  width: 100px;
-  height: 100px;
+.pet-form-card .image-previews img {
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 5px;
-  border: 1px solid #ddd;
 }
 
-.form-actions {
+.pet-form-card .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 2rem;
+  grid-column: 1 / -1;
 }
 
-.form-actions .main-button,
-.form-actions .cancel-button {
-  padding: 10px 20px;
+.pet-form-card .main-button,
+.pet-form-card .cancel-button {
+  padding: 0.8rem 1.5rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
 }
 
-.form-actions .cancel-button {
-  background-color: #6c757d;
+.pet-form-card .main-button {
+  background: #ff69b4;
   color: white;
 }
 
-.form-actions .cancel-button:hover {
-  background-color: #5a6268;
+.pet-form-card .cancel-button {
+  background-color: #6c757d;
+  color: white;
 }

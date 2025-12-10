@@ -1,6 +1,5 @@
 /* === ESTILOS GLOBALES DE LA APLICACIÓN === */
 
-/* 1. Fondo Global */
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -18,130 +17,11 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.75); /* Capa blanca un poco más opaca */
+  background-color: rgba(255, 255, 255, 0.75);
   min-height: 100vh;
 }
 
-/* 2. Contenedor de Página Genérico (para Login, Register, About, etc.) */
-.page-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 2rem;
-  background-color: transparent;
-}
-
-/* 3. Estilo de Tarjeta de Formulario Unificado */
-.form-card {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 20px;
-  border: 1px solid #ddd;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 450px;
-  text-align: center;
-}
-
-.form-card .form-logo {
-  width: 260px;
-  margin-bottom: 1.5rem;
-}
-
-.form-card h2 {
-  margin-bottom: 1.5rem;
-  color: #333;
-  font-size: 2rem;
-}
-
-.form-card .input-group {
-  margin-bottom: 1.2rem;
-  text-align: left;
-}
-
-.form-card .input-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #555;
-  font-weight: bold;
-}
-
-.form-card input,
-.form-card select,
-.form-card textarea {
-  width: 100%;
-  padding: 0.9rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 1rem;
-  background-color: #f9f9f9;
-  color: #333;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.form-card input:focus,
-.form-card select:focus,
-.form-card textarea:focus {
-  outline: none;
-  border-color: #ff69b4;
-  box-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
-}
-
-.form-card .main-button {
-  width: 100%;
-  padding: 0.9rem;
-  border: none;
-  border-radius: 10px;
-  background: #ff69b4;
-  color: white;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.form-card .main-button:hover {
-  background: #ff1493;
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
-}
-
-.form-card .main-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.form-card .form-switch {
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.form-card .form-switch a {
-  color: #ff69b4;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.form-card .back-button {
-  display: block;
-  width: 100%;
-  margin-top: 1.5rem;
-  padding: 0.8rem;
-  background-color: #6c757d;
-  color: white;
-  text-decoration: none;
-  border-radius: 10px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.form-card .back-button:hover {
-  background-color: #5a6268;
-}
-
-/* 4. Estilos de Modal Genéricos */
+/* --- ESTILOS DE MODAL GENÉRICOS --- */
 .modal-overlay {
   position: fixed;
   top: 0;

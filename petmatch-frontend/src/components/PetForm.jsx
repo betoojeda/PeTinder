@@ -96,30 +96,9 @@ const PetForm = ({ pet, onClose, onSaveSuccess }) => {
     }
   };
 
-  const renderBreedField = () => {
-    if (formData.type === 'Perro') {
-      return (
-        <div className="input-group">
-          <label>Raza</label>
-          <select name="breed" value={formData.breed} onChange={handleChange} required>
-            <option value="">Selecciona una raza</option>
-            {dogBreeds.map(breed => <option key={breed} value={breed}>{breed}</option>)}
-            <option value="Otra">Otra (especificar)</option>
-          </select>
-        </div>
-      );
-    }
-    return (
-      <div className="input-group">
-        <label>Raza/Tipo</label>
-        <input type="text" name="breed" value={formData.breed} onChange={handleChange} required />
-      </div>
-    );
-  };
-
   return (
-    <div className="form-card pet-form"> {/* Usar la clase genérica */}
-      <h3>{pet ? 'Editar Mascota' : 'Añadir Nueva Mascota'}</h3>
+    <div className="pet-form-card">
+      <h2>{pet ? 'Editar Mascota' : 'Añadir Nueva Mascota'}</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
           <div className="input-group">
@@ -134,7 +113,18 @@ const PetForm = ({ pet, onClose, onSaveSuccess }) => {
               <option value="Otro">Otro</option>
             </select>
           </div>
-          {renderBreedField()}
+          <div className="input-group">
+            <label>Raza</label>
+            {formData.type === 'Perro' ? (
+              <select name="breed" value={formData.breed} onChange={handleChange} required>
+                <option value="">Selecciona una raza</option>
+                {dogBreeds.map(breed => <option key={breed} value={breed}>{breed}</option>)}
+                <option value="Otra">Otra (especificar)</option>
+              </select>
+            ) : (
+              <input type="text" name="breed" value={formData.breed} onChange={handleChange} required />
+            )}
+          </div>
           <div className="input-group">
             <label>Edad</label>
             <input type="number" name="age" value={formData.age} onChange={handleChange} required />
@@ -165,37 +155,37 @@ const PetForm = ({ pet, onClose, onSaveSuccess }) => {
                   <option value="Alto">Alto</option>
               </select>
           </div>
-        </div>
-        
-        <div className="input-group full-width">
-          <label>Fotos de la Mascota</label>
-          <input type="file" multiple accept="image/*" onChange={handleFileChange} />
-          <div className="image-previews">
-            {filePreviews.map((url, index) => (
-              <img key={index} src={url} alt={`Preview ${index}`} />
-            ))}
+          
+          <div className="input-group full-width">
+            <label>Fotos de la Mascota</label>
+            <input type="file" multiple accept="image/*" onChange={handleFileChange} />
+            <div className="image-previews">
+              {filePreviews.map((url, index) => (
+                <img key={index} src={url} alt={`Preview ${index}`} />
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="input-group full-width">
-          <label>Descripción</label>
-          <textarea name="description" value={formData.description} onChange={handleChange}></textarea>
-        </div>
-        
-        <div className="checkbox-group full-width">
-            <label><input type="checkbox" name="compatibleWithDogs" checked={formData.compatibleWithDogs} onChange={handleChange} /> Compatible con perros</label>
-            <label><input type="checkbox" name="compatibleWithCats" checked={formData.compatibleWithCats} onChange={handleChange} /> Compatible con gatos</label>
-            <label><input type="checkbox" name="compatibleWithChildren" checked={formData.compatibleWithChildren} onChange={handleChange} /> Compatible con niños</label>
-        </div>
-        <div className="checkbox-group full-width">
-            <label><input type="checkbox" name="vaccinated" checked={formData.vaccinated} onChange={handleChange} /> Vacunado</label>
-            <label><input type="checkbox" name="dewormed" checked={formData.dewormed} onChange={handleChange} /> Desparasitado</label>
-            <label><input type="checkbox" name="sterilized" checked={formData.sterilized} onChange={handleChange} /> Esterilizado</label>
-        </div>
+          <div className="input-group full-width">
+            <label>Descripción</label>
+            <textarea name="description" value={formData.description} onChange={handleChange}></textarea>
+          </div>
+          
+          <div className="checkbox-group full-width">
+              <label><input type="checkbox" name="compatibleWithDogs" checked={formData.compatibleWithDogs} onChange={handleChange} /> Compatible con perros</label>
+              <label><input type="checkbox" name="compatibleWithCats" checked={formData.compatibleWithCats} onChange={handleChange} /> Compatible con gatos</label>
+              <label><input type="checkbox" name="compatibleWithChildren" checked={formData.compatibleWithChildren} onChange={handleChange} /> Compatible con niños</label>
+          </div>
+          <div className="checkbox-group full-width">
+              <label><input type="checkbox" name="vaccinated" checked={formData.vaccinated} onChange={handleChange} /> Vacunado</label>
+              <label><input type="checkbox" name="dewormed" checked={formData.dewormed} onChange={handleChange} /> Desparasitado</label>
+              <label><input type="checkbox" name="sterilized" checked={formData.sterilized} onChange={handleChange} /> Esterilizado</label>
+          </div>
 
-        <div className="form-actions full-width">
-            <button type="button" onClick={onClose} className="cancel-button" disabled={isSubmitting}>Cancelar</button>
-            <button type="submit" className="main-button" disabled={isSubmitting}>{isSubmitting ? 'Guardando...' : (pet ? 'Guardar Cambios' : 'Añadir Mascota')}</button>
+          <div className="form-actions full-width">
+              <button type="button" onClick={onClose} className="cancel-button" disabled={isSubmitting}>Cancelar</button>
+              <button type="submit" className="main-button" disabled={isSubmitting}>{isSubmitting ? 'Guardando...' : (pet ? 'Guardar Cambios' : 'Añadir Mascota')}</button>
+          </div>
         </div>
       </form>
     </div>

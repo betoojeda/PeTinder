@@ -4,16 +4,7 @@ import TinderStack from '../components/TinderStack';
 import PetForm from '../components/PetForm';
 import MyPetsList from '../components/MyPetsList';
 import { useAuth } from '../context/AuthContext';
-import logo from '../assets/LogoSinFondo.png'; // Importar el logo
-import '../App.css';
-
-const backgroundImages = [
-  'https://images.unsplash.com/photo-1505628346881-b72b27e84530?q=80&w=1932&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1519052537078-e6302a4968d4?q=80&w=1935&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?q=80&w=1964&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1573865526739-10659fec78a5?q=80&w=1935&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1588943211346-0908a1fb0b01?q=80&w=1935&auto=format&fit=crop'
-];
+import './DashboardPage.css';
 
 const DashboardPage = () => {
   const { logout, isAdmin } = useAuth();
@@ -41,18 +32,8 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="homepage-container">
-      <div className="background-carousel">
-        {backgroundImages.map((img, index) => (
-          <div
-            key={index}
-            className="carousel-image"
-            style={{ backgroundImage: `url(${img})` }}
-          />
-        ))}
-      </div>
-
-      <header className="homepage-header">
+    <div className="dashboard-container">
+      <header className="dashboard-header">
         <div className="nav-left">
           <Link to="/matches" className="nav-link">Mis Matches</Link>
           <button onClick={openPetFormForCreate} className="nav-link">
@@ -64,7 +45,7 @@ const DashboardPage = () => {
             </Link>
           )}
         </div>
-        <img src={logo} alt="PetMatch Logo" className="header-logo" /> {/* Logo en lugar de texto */}
+        <h1 className="brand-title">PetMatch</h1> {/* Restaurado el título de texto */}
         <div className="nav-right">
           <button onClick={logout} className="logout-button">
             Cerrar Sesión
