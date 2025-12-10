@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+const API_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:8080/api';
 
 const createPet = async (petData) => {
   const token = localStorage.getItem('token'); // Asumiendo que el token se guarda en localStorage

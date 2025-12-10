@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Lee la URL base de las variables de entorno de Vite.
-// El fallback '/api' se usa para el proxy de desarrollo de Vite.
-const baseURL = import.meta.env.VITE_API_URL || '/api';
+// Intentamos leer VITE_API_URL, luego VITE_REACT_APP_API_URL (que tienes en Railway),
+// y si no, usamos '/api' para que pase por el proxy de Nginx.
+const baseURL = import.meta.env.VITE_API_URL || import.meta.env.VITE_REACT_APP_API_URL || '/api';
 
 const apiClient = axios.create({
   baseURL: baseURL,
