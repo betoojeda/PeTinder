@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logo from '../assets/LogoSinFondo.png';
-import '../styles/auth.css'; // Importar el nuevo CSS de autenticación
+import '../styles/auth.css';
 import toast from 'react-hot-toast';
 import LoadingModal from '../components/LoadingModal';
 
@@ -34,41 +34,45 @@ const LoginPage = () => {
   return (
     <>
       {isLoading && <LoadingModal message="Iniciando sesión..." />}
-      <div className="auth-container">
-        <div className="auth-form-wrapper">
+      <div className="auth-page-container">
+        <div className="form-container">
           <img src={logo} alt="petmatch Logo" className="auth-logo" />
-          <form onSubmit={handleSubmit} className="auth-form">
-            <h2>Iniciar Sesión</h2>
-            <div className="input-group">
+          <h2>Iniciar Sesión</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-row">
+              <label htmlFor="email">Correo electrónico</label>
               <input
+                id="email"
                 type="email"
-                placeholder="Correo electrónico"
+                placeholder="tu@email.com"
+                className="form-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
               />
             </div>
-            <div className="input-group">
+            <div className="form-row">
+              <label htmlFor="password">Contraseña</label>
               <input
+                id="password"
                 type="password"
-                placeholder="Contraseña"
+                placeholder="Tu contraseña"
+                className="form-input"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={isLoading}
               />
             </div>
-            <button type="submit" className="auth-button" disabled={isLoading}>
+            <button type="submit" className="button-primary auth-button" disabled={isLoading}>
               {isLoading ? 'Entrando...' : 'Entrar'}
             </button>
-            <p className="auth-switch">
-              ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
-            </p>
-            <p className="auth-switch" style={{ marginTop: '1rem' }}>
-              <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
-            </p>
-            <Link to="/" className="back-to-home-button">Volver a la Página Principal</Link>
+            <div className="auth-links">
+              <p>¿No tienes cuenta? <Link to="/register">Regístrate</Link></p>
+              <p><Link to="/forgot-password">¿Olvidaste tu contraseña?</Link></p>
+              <Link to="/" className="back-to-home-button">Volver a la Página Principal</Link>
+            </div>
           </form>
         </div>
       </div>

@@ -1,109 +1,39 @@
-/* Estilo de tarjeta para el formulario de mascota */
-.pet-form-card {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 20px;
-  width: 100%;
-  max-width: 550px; /* Un poco más ancho para el grid */
-  margin: auto;
+/* PetForm.css - Estilos específicos para el formulario de mascotas */
+
+.form-container h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+  border-bottom: 2px solid #fdecdf;
+  padding-bottom: 0.5rem;
 }
 
-.pet-form-card h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #333;
-  font-size: 2rem;
-}
-
-.pet-form-card form {
-  display: contents;
-}
-
-.pet-form-card .form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem 1.5rem;
-}
-
-.pet-form-card .input-group {
-  text-align: left;
-}
-
-.pet-form-card .input-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #555;
-  font-weight: bold;
-}
-
-.pet-form-card input,
-.pet-form-card select,
-.pet-form-card textarea {
-  width: 100%;
-  padding: 0.9rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 1rem;
-  background-color: #f9f9f9;
-  color: #333;
-}
-
-.pet-form-card .full-width {
-  grid-column: 1 / -1;
-}
-
-.pet-form-card .checkbox-group {
+.checkbox-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 1.5rem;
+  padding-top: 0.5rem;
 }
 
-.pet-form-card .checkbox-group label {
+.checkbox-label {
   font-weight: normal;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
+  cursor: pointer;
 }
 
-.pet-form-card .image-previews {
+.image-previews {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
 }
 
-.pet-form-card .image-previews img {
-  width: 80px;
-  height: 80px;
+.image-previews img {
+  width: 90px;
+  height: 90px;
   object-fit: cover;
-  border-radius: 5px;
-}
-
-.pet-form-card .form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 2rem;
-  grid-column: 1 / -1;
-}
-
-.pet-form-card .main-button,
-.pet-form-card .cancel-button {
-  padding: 0.8rem 1.5rem;
-  border: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.pet-form-card .main-button {
-  background: #ff69b4;
-  color: white;
-}
-
-.pet-form-card .cancel-button {
-  background-color: #6c757d;
-  color: white;
+  border-radius: 8px;
+  border: 2px solid var(--color-border);
 }

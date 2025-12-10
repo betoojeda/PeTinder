@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { dogBreeds } from '../constants/breeds';
 import { uploadPetPhoto } from '../services/api';
 import toast from 'react-hot-toast';
-import './PetForm.css';
+import './PetForm.css'; // Aún lo necesitamos para estilos específicos
 
 const PetForm = ({ pet, onClose, onSaveSuccess }) => {
   const { user } = useAuth();
@@ -96,96 +96,107 @@ const PetForm = ({ pet, onClose, onSaveSuccess }) => {
     }
   };
 
+  const renderField = (label, name, type = 'text', options = []) => (
+    <div className="form-row">
+      <label>{label}</label>
+      {type === 'select' ? (
+        <select name={name} value={formData[name]} onChange={handleChange} className="form-input">
+          {options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+        </select>
+      ) : type === 'textarea' ? (
+        <textarea name={name} value={formData[name]} onChange={handleChange} className="form-input"></textarea>
+      ) : (
+        <input type={type} name={name} value={formData[name]} onChange={handleChange} className="form-input" />
+      )}
+    </div>
+  );
+
+  const renderCheckboxGroup = (title, fields) => (
+    <div className="form-row">
+      <label>{title}</label>
+      <div className="checkbox-group">
+        {fields.map(field => (
+          <label key={field.name} className="checkbox-label">
+            <input type="checkbox" name={field.name} checked={formData[field.name]} onChange={handleChange} />
+            {field.label}
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
-    <div className="pet-form-card">
+    <div className="form-container">
       <h2>{pet ? 'Editar Mascota' : 'Añadir Nueva Mascota'}</h2>
       <form onSubmit={handleSubmit}>
-        <div className="form-grid">
-          <div className="input-group">
-            <label>Nombre</label>
-            <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-          </div>
-          <div className="input-group">
-            <label>Especie</label>
-            <select name="type" value={formData.type} onChange={handleChange}>
-              <option value="Perro">Perro</option>
-              <option value="Gato">Gato</option>
-              <option value="Otro">Otro</option>
+        
+        <h3>Información Básica</h3>
+        {renderField('Nombre', 'name', 'text')}
+        {renderField('Especie', 'type', 'select', [
+          { value: 'Perro', label: 'Perro' },
+          { value: 'Gato', label: 'Gato' },
+          { value: 'Otro', label: 'Otro' },
+        ])}
+        <div className="form-row">
+          <label>Raza</label>
+          {formData.type === 'Perro' ? (
+            <select name="breed" value={formData.breed} onChange={handleChange} required className="form-input">
+              <option value="">Selecciona una raza</option>
+              {dogBreeds.map(breed => <option key={breed} value={breed}>{breed}</option>)}
+              <option value="Otra">Otra (especificar)</option>
             </select>
-          </div>
-          <div className="input-group">
-            <label>Raza</label>
-            {formData.type === 'Perro' ? (
-              <select name="breed" value={formData.breed} onChange={handleChange} required>
-                <option value="">Selecciona una raza</option>
-                {dogBreeds.map(breed => <option key={breed} value={breed}>{breed}</option>)}
-                <option value="Otra">Otra (especificar)</option>
-              </select>
-            ) : (
-              <input type="text" name="breed" value={formData.breed} onChange={handleChange} required />
-            )}
-          </div>
-          <div className="input-group">
-            <label>Edad</label>
-            <input type="number" name="age" value={formData.age} onChange={handleChange} required />
-          </div>
-          <div className="input-group">
-            <label>Género</label>
-            <select name="gender" value={formData.gender} onChange={handleChange}>
-              <option value="">Selecciona</option>
-              <option value="Macho">Macho</option>
-              <option value="Hembra">Hembra</option>
-            </select>
-          </div>
-          <div className="input-group">
-            <label>Tamaño</label>
-              <select name="size" value={formData.size} onChange={handleChange}>
-                  <option value="">Selecciona</option>
-                  <option value="Pequeño">Pequeño</option>
-                  <option value="Mediano">Mediano</option>
-                  <option value="Grande">Grande</option>
-              </select>
-          </div>
-          <div className="input-group">
-            <label>Nivel de Energía</label>
-              <select name="energyLevel" value={formData.energyLevel} onChange={handleChange}>
-                  <option value="">Selecciona</option>
-                  <option value="Bajo">Bajo</option>
-                  <option value="Medio">Medio</option>
-                  <option value="Alto">Alto</option>
-              </select>
-          </div>
-          
-          <div className="input-group full-width">
-            <label>Fotos de la Mascota</label>
-            <input type="file" multiple accept="image/*" onChange={handleFileChange} />
-            <div className="image-previews">
-              {filePreviews.map((url, index) => (
-                <img key={index} src={url} alt={`Preview ${index}`} />
-              ))}
-            </div>
-          </div>
+          ) : (
+            <input type="text" name="breed" value={formData.breed} onChange={handleChange} required className="form-input" />
+          )}
+        </div>
+        {renderField('Edad', 'age', 'number')}
+        {renderField('Género', 'gender', 'select', [
+          { value: '', label: 'Selecciona' },
+          { value: 'Macho', label: 'Macho' },
+          { value: 'Hembra', label: 'Hembra' },
+        ])}
+        {renderField('Tamaño', 'size', 'select', [
+          { value: '', label: 'Selecciona' },
+          { value: 'Pequeño', label: 'Pequeño' },
+          { value: 'Mediano', label: 'Mediano' },
+          { value: 'Grande', label: 'Grande' },
+        ])}
 
-          <div className="input-group full-width">
-            <label>Descripción</label>
-            <textarea name="description" value={formData.description} onChange={handleChange}></textarea>
-          </div>
-          
-          <div className="checkbox-group full-width">
-              <label><input type="checkbox" name="compatibleWithDogs" checked={formData.compatibleWithDogs} onChange={handleChange} /> Compatible con perros</label>
-              <label><input type="checkbox" name="compatibleWithCats" checked={formData.compatibleWithCats} onChange={handleChange} /> Compatible con gatos</label>
-              <label><input type="checkbox" name="compatibleWithChildren" checked={formData.compatibleWithChildren} onChange={handleChange} /> Compatible con niños</label>
-          </div>
-          <div className="checkbox-group full-width">
-              <label><input type="checkbox" name="vaccinated" checked={formData.vaccinated} onChange={handleChange} /> Vacunado</label>
-              <label><input type="checkbox" name="dewormed" checked={formData.dewormed} onChange={handleChange} /> Desparasitado</label>
-              <label><input type="checkbox" name="sterilized" checked={formData.sterilized} onChange={handleChange} /> Esterilizado</label>
-          </div>
+        <h3>Personalidad y Comportamiento</h3>
+        {renderField('Nivel de Energía', 'energyLevel', 'select', [
+          { value: '', label: 'Selecciona' },
+          { value: 'Bajo', label: 'Bajo' },
+          { value: 'Medio', label: 'Medio' },
+          { value: 'Alto', label: 'Alto' },
+        ])}
+        {renderCheckboxGroup('Compatibilidad', [
+          { name: 'compatibleWithDogs', label: 'Con perros' },
+          { name: 'compatibleWithCats', label: 'Con gatos' },
+          { name: 'compatibleWithChildren', label: 'Con niños' },
+        ])}
+        
+        <h3>Salud</h3>
+        {renderCheckboxGroup('Estado de Salud', [
+          { name: 'vaccinated', label: 'Vacunado' },
+          { name: 'dewormed', label: 'Desparasitado' },
+          { name: 'sterilized', label: 'Esterilizado' },
+        ])}
 
-          <div className="form-actions full-width">
-              <button type="button" onClick={onClose} className="cancel-button" disabled={isSubmitting}>Cancelar</button>
-              <button type="submit" className="main-button" disabled={isSubmitting}>{isSubmitting ? 'Guardando...' : (pet ? 'Guardar Cambios' : 'Añadir Mascota')}</button>
+        <h3>Fotos y Descripción</h3>
+        <div className="form-row">
+          <label>Fotos de la Mascota</label>
+          <input type="file" multiple accept="image/*" onChange={handleFileChange} className="form-input" />
+          <div className="image-previews">
+            {filePreviews.map((url, index) => (
+              <img key={index} src={url} alt={`Preview ${index}`} />
+            ))}
           </div>
+        </div>
+        {renderField('Descripción', 'description', 'textarea')}
+
+        <div className="form-actions">
+          <button type="button" onClick={onClose} className="button-secondary" disabled={isSubmitting}>Cancelar</button>
+          <button type="submit" className="button-primary" disabled={isSubmitting}>{isSubmitting ? 'Guardando...' : (pet ? 'Guardar Cambios' : 'Añadir Mascota')}</button>
         </div>
       </form>
     </div>
