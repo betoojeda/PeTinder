@@ -19,18 +19,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class FeedController {
 
     private final FeedService feedService;
-    private final UserRepository userRepository; // Inyectar para buscar al usuario
+    private final UserRepository userRepository;
 
     @GetMapping
     public Page<PetDto> getFeed(
-            @AuthenticationPrincipal UserDetails userDetails, // Obtener el usuario autenticado
+            @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        // Buscar nuestro objeto User a partir del email del principal
-        User user = userRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        
-        return feedService.getFeed(user.getId(), page, size);
+        if (userDetails != null) {
+            // Si el usuario está autenticado, obtenemos su feed personalizado
+            User user = userRepository.findByEmail(userDetails.getUsername())
+                    .orElseThrow(() -> new RuntimeException("Usuario autenticado no encontrado en la base de datos"));
+            return feedService.getFeedForUser(user, page, size);
+        } else {
+            // Si no hay usuario, devolvemos un feed público y genérico
+            return feedService.getPublicFeed(page, size);
+        }
     }
 }

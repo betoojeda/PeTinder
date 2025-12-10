@@ -3,6 +3,7 @@ package com.petmatch.service;
 import com.petmatch.dto.PetDto;
 import com.petmatch.mapper.PetMapper;
 import com.petmatch.model.Pet;
+import com.petmatch.model.User;
 import com.petmatch.repository.PetRepository;
 import com.petmatch.repository.SwipeRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,22 +27,44 @@ public class FeedService {
     private final SwipeRepository swipeRepository;
     private final PetMapper petMapper;
 
-    public Page<PetDto> getFeed(Long userId, int page, int size) {
-        log.info("Fetching feed for user with ID: {}, page: {}, size: {}", userId, page, size);
+    /**
+     * Obtiene un feed personalizado para un usuario autenticado, excluyendo sus propias mascotas
+     * y las que ya ha "swiped".
+     */
+    public Page<PetDto> getFeedForUser(User user, int page, int size) {
+        Long userId = user.getId();
+        log.info("Fetching personalized feed for user ID: {}, page: {}, size: {}", userId, page, size);
 
-        // mascotas que el usuario ya swapeó
+        // Obtener los IDs de las mascotas en las que el usuario ya ha interactuado
         Set<Long> swipedPetIds = swipeRepository.findAllSwipedPetIdsByUser(userId);
-        log.debug("User with ID: {} has swiped on {} pets", userId, swipedPetIds.size());
+        log.debug("User ID: {} has swiped on {} pets", userId, swipedPetIds.size());
 
+        // Si el conjunto está vacío, añadimos un valor que no existirá para evitar errores SQL
         if (swipedPetIds.isEmpty()) {
-            // evita error en SQL con "NOT IN ()"
-            swipedPetIds = Set.of(-1L);
+            swipedPetIds.add(-1L);
         }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 
+        // Buscar mascotas que no pertenezcan al usuario y en las que no haya interactuado
         Page<Pet> pets = petRepository.findAvailableFeed(userId, swipedPetIds, pageable);
-        log.info("Found {} pets for feed for user with ID: {}", pets.getTotalElements(), userId);
+        log.info("Found {} pets for personalized feed for user ID: {}", pets.getTotalElements(), userId);
+
+        return pets.map(petMapper::toDto);
+    }
+
+    /**
+     * Obtiene un feed público y genérico para usuarios no autenticados.
+     * Simplemente muestra todas las mascotas disponibles.
+     */
+    public Page<PetDto> getPublicFeed(int page, int size) {
+        log.info("Fetching public feed for anonymous user, page: {}, size: {}", page, size);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        // Buscar todas las mascotas sin filtros de usuario
+        Page<Pet> pets = petRepository.findAll(pageable);
+        log.info("Found {} pets for public feed", pets.getTotalElements());
 
         return pets.map(petMapper::toDto);
     }
