@@ -1,144 +1,59 @@
-/* Estilos de la Página de Inicio Pública */
-.landing-page {
+/* ... (estilos existentes) ... */
+
+.hero-text-box {
+  background: linear-gradient(to right, #f0f0f0, #e0e0e0);
+  padding: 2rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-nav {
+  display: none; /* Oculto por defecto */
+  position: relative;
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  gap: 0.5rem;
+  padding: 1rem;
+  z-index: 100;
 }
 
-.landing-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: var(--color-white);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.landing-logo-img {
-  height: 100px; /* Ajusta la altura según sea necesario */
-  width: auto;
-}
-
-.landing-nav {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.landing-nav-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
+.menu-item {
   text-decoration: none;
-  color: var(--color-text-light);
-  font-weight: bold;
-  transition: background-color 0.3s;
-  font-family: 'Poppins', sans-serif;
+  color: var(--color-text);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
 }
 
-.landing-nav-btn:hover {
-  background-color: #f0f0f0;
-}
-
-.landing-nav-btn.primary {
+.menu-item.primary {
   background: var(--gradient-primary);
   color: white;
 }
 
-.landing-main {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2rem;
+/* Media Query para mostrar el menú hamburguesa en pantallas pequeñas */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+  .mobile-nav {
+    display: block;
+  }
 }
 
-.hero-text-box {
-  margin-bottom: 2rem;
-}
-
-.hero-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: var(--color-text);
-  margin: 0;
-  font-family: 'Luckiest Guy', cursive;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  color: var(--color-text-light);
-  margin-top: 1rem;
-  font-family: 'Poppins', sans-serif;
-}
-
-.hero-image-container {
-  width: 100%;
-  max-width: 500px;
-  margin-bottom: 2rem;
-}
-
-.hero-cta-btn {
-  padding: 1rem 2rem;
-  border-radius: 30px;
-  text-decoration: none;
-  background: var(--gradient-accent);
-  color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
-  transition: transform 0.2s;
-  font-family: 'Luckiest Guy', cursive;
-  letter-spacing: 1px;
-}
-
-.hero-cta-btn:hover {
-  transform: scale(1.05);
-}
-
-/* --- Nueva Sección de Promoción de Mascotas Perdidas --- */
-.lost-pets-promo-section {
-  padding: 4rem 2rem;
-  background-color: var(--color-white);
-  text-align: center;
-}
-
-.promo-content {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.promo-content h2 {
-  font-size: 2.5rem;
-  color: var(--color-primary);
-  margin-bottom: 1rem;
-  font-family: 'Luckiest Guy', cursive;
-}
-
-.promo-content p {
-  font-size: 1.2rem;
-  color: var(--color-text-light);
-  margin-bottom: 2rem;
-}
-
-.landing-stats {
-  display: flex;
-  justify-content: space-around;
-  padding: 2rem;
-  background-color: #f9f9f9;
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-number {
-  font-size: 2rem;
-  font-weight: bold;
-  font-family: 'Luckiest Guy', cursive;
-}
-
-.stat-label {
-  font-size: 1rem;
-  color: var(--color-text-light);
-}
+/* ... (resto de los estilos) ... */

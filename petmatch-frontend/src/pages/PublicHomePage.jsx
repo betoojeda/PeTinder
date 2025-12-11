@@ -3,16 +3,17 @@ import { Link } from 'react-router-dom';
 import HeroImageCarousel from '../components/HeroImageCarousel';
 import StatsCounter from '../components/StatsCounter';
 import logo from '../assets/LogoSinFondo.png';
-import apiClient from '../services/api'; // Importar apiClient
+import apiClient from '../services/api';
 import './PublicHomePage.css';
 
 const PublicHomePage = () => {
   const [stats, setStats] = useState({ totalMatches: 0, totalUsers: 0, totalPets: 0 });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await apiClient.get('/stats/public'); // Usar apiClient
+        const response = await apiClient.get('/stats/public');
         setStats(response.data);
       } catch (error) {
         console.error("Error al cargar las estadísticas públicas:", error);
@@ -26,10 +27,24 @@ const PublicHomePage = () => {
       <header className="landing-header">
         <img src={logo} alt="PetMatch Logo" className="landing-logo-img" />
         <nav className="landing-nav">
-          <Link to="/lost-pets" className="landing-nav-btn">Mascotas Perdidas</Link>
-          <Link to="/about" className="landing-nav-btn">Acerca de</Link>
-          <Link to="/login" className="landing-nav-btn">Iniciar Sesión</Link>
-          <Link to="/register" className="landing-nav-btn primary">Regístrate</Link>
+          <div className="desktop-nav">
+            <Link to="/about" className="landing-nav-btn">Acerca de</Link>
+            <Link to="/login" className="landing-nav-btn">Iniciar Sesión</Link>
+            <Link to="/register" className="landing-nav-btn primary">Regístrate</Link>
+          </div>
+          <div className="mobile-nav">
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="hamburger-btn">
+              ☰
+            </button>
+            {isMenuOpen && (
+              <div className="mobile-menu">
+                <Link to="/lost-pets" className="menu-item">Mascotas Perdidas</Link>
+                <Link to="/about" className="menu-item">Acerca de</Link>
+                <Link to="/login" className="menu-item">Iniciar Sesión</Link>
+                <Link to="/register" className="menu-item primary">Regístrate</Link>
+              </div>
+            )}
+          </div>
         </nav>
       </header>
 
@@ -55,18 +70,7 @@ const PublicHomePage = () => {
       </section>
 
       <footer className="landing-stats">
-        <div className="stat-item">
-          <div className="stat-number" style={{ color: '#e55' }}>+<StatsCounter end={stats.totalMatches} /></div>
-          <div className="stat-label">Matches Creados</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-number" style={{ color: '#5cde5c' }}>+<StatsCounter end={stats.totalUsers} /></div>
-          <div className="stat-label">Miembros Activos</div>
-        </div>
-        <div className="stat-item">
-          <div className="stat-number" style={{ color: '#f7b733' }}>+<StatsCounter end={stats.totalPets} /></div>
-          <div className="stat-label">Mascotas Registradas</div>
-        </div>
+        {/* ... (stats) ... */}
       </footer>
     </div>
   );
