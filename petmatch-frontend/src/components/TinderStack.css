@@ -1,0 +1,92 @@
+.cardContainer {
+  width: 90vw;
+  max-width: 400px;
+  height: 60vh;
+  max-height: 500px;
+  margin: 2rem auto;
+}
+
+.swipe {
+  position: absolute;
+}
+
+.card {
+  position: relative;
+  width: 90vw;
+  max-width: 400px;
+  height: 60vh;
+  max-height: 500px;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.card-info {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.card-info h3, .card-info p {
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.card-info h3 {
+  font-size: 1.8rem;
+  font-family: 'Luckiest Guy', cursive;
+}
+
+.card-info p {
+  font-size: 1.1rem;
+}
+
+.info-text {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--color-text-light);
+}
+
+.error-text {
+  color: var(--color-error);
+}
+
+/* --- Estilos para los botones de Swipe --- */
+.swipe-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.like-button, .dislike-button {
+  background-color: var(--color-white);
+  border: none;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  font-size: 2.5rem;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.like-button:hover, .dislike-button:hover {
+  transform: scale(1.1);
+}
+
+.like-button {
+  color: #2de194;
+}
+
+.dislike-button {
+  color: #ff69b4;
+}
