@@ -1,8 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { createLostPetPost } from '../services/lostPetsService';
-import { uploadPetPhoto } from '../services/api'; // Reutilizamos el servicio de subida
+import { uploadPetPhoto } from '../services/api';
 import toast from 'react-hot-toast';
 import LoadingModal from './LoadingModal';
+
+const LocationPicker = ({ onLocationChange }) => {
+  const [position, setPosition] = useState(null);
+  const map = useMapEvents({
+    click(e) {
+      setPosition(e.latlng);
+      onLocationChange(e.latlng);
+      map.flyTo(e.latlng, map.getZoom());
+    },
+  });
+
+  return position === null ? null : (
+    <Marker position={position}></Marker>
+  );
+};
 
 const LostPetForm = ({ onClose, onSaveSuccess }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +28,10 @@ const LostPetForm = ({ onClose, onSaveSuccess }) => {
   });
   const [file, setFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleLocationChange = (latlng) => {
+    setFormData(prev => ({ ...prev, location: `${latlng.lat}, ${latlng.lng}` }));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,15 +48,15 @@ const LostPetForm = ({ onClose, onSaveSuccess }) => {
       toast.error('Por favor, sube una foto de la mascota.');
       return;
     }
+    if (!formData.location) {
+      toast.error('Por favor, selecciona una ubicación en el mapa.');
+      return;
+    }
     setIsSubmitting(true);
 
     try {
-      // 1. Crear el post con los datos de texto
       const newPost = await createLostPetPost(formData);
-      
-      // 2. Subir la foto al post recién creado
-      const finalPost = await uploadPetPhoto(newPost.id, file, '/lost-pets'); // Usamos un nuevo path
-
+      const finalPost = await uploadPetPhoto(newPost.id, file, '/lost-pets');
       toast.success('Aviso publicado con éxito.');
       onSaveSuccess(finalPost);
       onClose();
@@ -58,16 +78,23 @@ const LostPetForm = ({ onClose, onSaveSuccess }) => {
             <input type="text" name="petName" value={formData.petName} onChange={handleChange} className="form-input" required />
           </div>
           <div className="form-row">
-            <label>Última ubicación conocida</label>
-            <input type="text" name="location" value={formData.location} onChange={handleChange} className="form-input" placeholder="Ej: Cerca del Parque Central, Barrio..." required />
-          </div>
-          <div className="form-row">
             <label>Descripción</label>
             <textarea name="description" value={formData.description} onChange={handleChange} className="form-input" placeholder="Describe a la mascota, ropa que llevaba, etc." required></textarea>
           </div>
           <div className="form-row">
             <label>Foto</label>
             <input type="file" accept="image/*" onChange={handleFileChange} className="form-input" required />
+          </div>
+          <div className="form-row">
+            <label>Última ubicación conocida (haz clic en el mapa)</label>
+            <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false} style={{ height: '300px', width: '100%' }}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <LocationPicker onLocationChange={handleLocationChange} />
+            </MapContainer>
+            <input type="text" name="location" value={formData.location} onChange={handleChange} className="form-input" placeholder="O escribe la ubicación aquí" required />
           </div>
           <div className="form-actions">
             <button type="button" onClick={onClose} className="button-secondary" disabled={isSubmitting}>Cancelar</button>
