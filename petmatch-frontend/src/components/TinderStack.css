@@ -35,13 +35,17 @@
 }
 
 .card-info h3, .card-info p {
-  margin: 0;
+  margin: 0.2rem 0;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .card-info h3 {
-  font-size: 1.8rem;
-  font-family: 'Luckiest Guy', cursive;
+  font-size: 1.5rem;
+  font-family: 'Poppins', sans-serif; /* Usar Poppins para legibilidad */
+}
+
+.card-info .label {
+  font-weight: 700; /* Negrita */
 }
 
 .card-info p {

@@ -105,7 +105,8 @@ const TinderStack = () => {
               onClick={() => handleCardClick(pet)}
             >
               <div className="card-info">
-                <h3>{pet.name}, {pet.age}</h3>
+                <h3><span className="label">Nombre:</span> {pet.name}</h3>
+                <h3><span className="label">Edad:</span> {pet.age} años</h3>
                 <p>{pet.breed || 'Raza no especificada'}</p>
               </div>
             </div>
