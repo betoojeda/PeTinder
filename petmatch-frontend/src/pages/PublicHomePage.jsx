@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import HeroImageCarousel from '../components/HeroImageCarousel';
 import StatsCounter from '../components/StatsCounter';
+import logo from '../assets/LogoSinFondo.png'; // Importar el logo
 import './PublicHomePage.css';
 
 const PublicHomePage = () => {
@@ -26,7 +27,7 @@ const PublicHomePage = () => {
   return (
     <div className="landing-page"> 
       <header className="landing-header">
-        <div className="landing-logo">PetMatch</div>
+        <img src={logo} alt="PetMatch Logo" className="landing-logo-img" /> {/* Reemplazar div por img */}
         <nav className="landing-nav">
           <Link to="/lost-pets" className="landing-nav-btn">Mascotas Perdidas</Link>
           <Link to="/about" className="landing-nav-btn">Acerca de</Link>
