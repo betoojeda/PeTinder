@@ -3,7 +3,6 @@
 /* Estilos Base */
 body {
   margin: 0;
-  /* Open Sans para todo: legible, profesional y cálida */
   font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -39,7 +38,7 @@ body {
 
 h1, h2, h3, .landing-logo, .auth-logo-text, .button-primary {
   font-family: 'Open Sans', sans-serif;
-  font-weight: 700; /* Negrita para destacar */
+  font-weight: 700;
 }
 
 /* --- Estilos Estándar para Formularios --- */
@@ -47,11 +46,11 @@ h1, h2, h3, .landing-logo, .auth-logo-text, .button-primary {
 .form-container {
   background: var(--color-white);
   padding: 2.5rem;
-  border-radius: 12px; /* Bordes menos redondeados para ser más serio */
+  border-radius: 20px; /* Contenedores también redondeados */
   width: 100%;
   max-width: 500px;
   margin: 2rem auto;
-  box-shadow: 0 4px 20px rgba(78, 52, 46, 0.08); /* Sombra suave en tono marrón */
+  box-shadow: 0 4px 20px rgba(78, 52, 46, 0.08);
   border: 1px solid var(--color-border);
 }
 
@@ -79,7 +78,7 @@ h1, h2, h3, .landing-logo, .auth-logo-text, .button-primary {
   width: 100%;
   padding: 0.8rem 1rem;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 25px; /* Inputs redondeados */
   font-size: 1rem;
   background-color: #FAFAFA;
   color: var(--color-text);
@@ -102,9 +101,9 @@ h1, h2, h3, .landing-logo, .auth-logo-text, .button-primary {
 }
 
 .button-primary {
-  padding: 0.8rem 1.5rem;
+  padding: 0.8rem 2rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 50px; /* Botones completamente redondeados (píldora) */
   font-size: 1rem;
   cursor: pointer;
   background: var(--gradient-primary);
@@ -120,9 +119,9 @@ h1, h2, h3, .landing-logo, .auth-logo-text, .button-primary {
 }
 
 .button-secondary {
-  padding: 0.8rem 1.5rem;
+  padding: 0.8rem 2rem;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 50px; /* Botones completamente redondeados */
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -153,7 +152,7 @@ h1, h2, h3, .landing-logo, .auth-logo-text, .button-primary {
   max-width: 1200px;
   margin: 20px auto;
   background: white;
-  border-radius: 8px;
+  border-radius: 20px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
@@ -176,8 +175,8 @@ h1, h2, h3, .landing-logo, .auth-logo-text, .button-primary {
 
 .users-list-container button {
   margin-right: 5px;
-  padding: 5px 10px;
+  padding: 5px 15px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 20px; /* Botones de tabla redondeados */
   cursor: pointer;
 }
