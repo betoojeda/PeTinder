@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+/* La línea @import ha sido eliminada de aquí */
 
 /* Estilos Base */
 body {
@@ -9,6 +9,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ... (resto del archivo CSS sin cambios) ... */
 
 /* Nueva Paleta de Colores Cálida */
 :root {
@@ -38,7 +40,7 @@ body {
 
 h1, h2, h3, .landing-logo, .auth-logo-text, .button-primary {
   font-family: 'Open Sans', sans-serif;
-  font-weight: 700;
+  font-weight: 700; /* Negrita para destacar */
 }
 
 /* --- Estilos Estándar para Formularios --- */
@@ -50,7 +52,7 @@ h1, h2, h3, .landing-logo, .auth-logo-text, .button-primary {
   width: 100%;
   max-width: 500px;
   margin: 2rem auto;
-  box-shadow: 0 4px 20px rgba(78, 52, 46, 0.08);
+  box-shadow: 0 4px 20px rgba(78, 52, 46, 0.08); /* Sombra suave en tono marrón */
   border: 1px solid var(--color-border);
 }
 
@@ -151,7 +153,6 @@ h1, h2, h3, .landing-logo, .auth-logo-text, .button-primary {
   width: 100%;
   max-width: 1200px;
   margin: 20px auto;
-  background: white;
   border-radius: 20px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
