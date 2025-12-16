@@ -3,7 +3,10 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--color-background);
+  background-image: url('../assets/Fondo.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .landing-header {
@@ -11,7 +14,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: var(--color-card-bg);
+  background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente para legibilidad */
+  backdrop-filter: blur(5px);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -36,7 +40,7 @@
 }
 
 .landing-nav-btn:hover {
-  background-color: #f0f0f0;
+  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .landing-nav-btn.primary {
@@ -56,10 +60,12 @@
 }
 
 .hero-text-box {
-  background: transparent; /* Quitamos el fondo gris */
-  padding: 1rem;
+  background: rgba(255, 255, 255, 0.85); /* Fondo semitransparente */
+  backdrop-filter: blur(5px);
+  padding: 2rem;
   border-radius: 15px;
   margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .hero-title {
@@ -83,7 +89,6 @@
 }
 
 .hero-cta-btn {
-  /* Reutilizamos la clase de botón primario */
   padding: 1rem 2.5rem;
   border-radius: 50px;
   text-decoration: none;
