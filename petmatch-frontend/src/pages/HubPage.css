@@ -85,21 +85,9 @@
   font-size: 1.1rem;
 }
 
-/* --- Colores y Fotos de Fondo --- */
-
-.card-match {
-  background-image: url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b'); /* Dos perritos jugando */
-}
+/* --- Colores de Acento --- */
 .card-match .card-action { color: #F4A261; } /* Naranja */
-
-.card-loss { /* Cambiado de .card-finder a .card-loss */
-  background-image: url('https://images.unsplash.com/photo-1561037404-61cd46aa615b'); /* Perro mirando lejos */
-}
 .card-loss .card-action { color: #26C6DA; } /* Cyan */
-
-.card-adopt {
-  background-image: url('https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e'); /* Gato en adopción */
-}
 .card-adopt .card-action { color: #BDBDBD; } /* Gris */
 
 .hub-card.disabled {

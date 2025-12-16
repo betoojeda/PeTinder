@@ -1,21 +1,21 @@
-/* --- FUENTE PRINCIPAL --- */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+/* --- FUENTE PRINCIPAL: NUNITO --- */
+/* La fuente se carga desde index.html */
 
-/* --- NUEVA PALETA DE COLORES Y ESTILOS BASE --- */
+/* --- PALETA DE COLORES Y ESTILOS BASE --- */
 :root {
   /* Paleta de Colores "Friendly & Warm" */
-  --color-brand: #F4A261;        /* Soft Peach Orange - Para identidad y acentos */
-  --color-primary-action: #7BC47F; /* Friendly Green - Para botones principales */
+  --color-brand: #F4A261;        /* Soft Peach Orange */
+  --color-primary-action: #7BC47F; /* Friendly Green */
   --color-primary-action-hover: #63B56A; /* Green Hover */
 
-  --color-background: #FAFAF8;      /* Warm White - Fondo principal */
-  --color-card-bg: #FFFFFF;         /* Pure White - Fondo de tarjetas y modales */
+  --color-background: #FAFAF8;      /* Warm White */
+  --color-card-bg: #FFFFFF;         /* Pure White */
 
-  --color-text-primary: #4A342E;    /* Dark Warm Brown - Títulos y texto principal */
-  --color-text-secondary: #7A7A7A;  /* Soft Gray - Texto secundario */
+  --color-text-primary: #4A342E;    /* Dark Warm Brown */
+  --color-text-secondary: #7A7A7A;  /* Soft Gray */
 
-  --color-border: #DADADA;          /* Light Border Gray - Bordes y divisores */
-  --color-error: #E57373;           /* Rojo Suave (se mantiene) */
+  --color-border: #DADADA;          /* Light Border Gray */
+  --color-error: #E57373;           /* Rojo Suave */
 
   /* Degradado para botones de acción */
   --gradient-primary: linear-gradient(135deg, var(--color-primary-action), var(--color-primary-action-hover));
@@ -23,17 +23,18 @@
 
 body {
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400; /* Regular */
   background-color: var(--color-background);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- TIPOGRAFÍA --- */
+/* --- TIPOGRAFÍA CON NUNITO --- */
 h1, h2, h3 {
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800; /* ExtraBold para títulos principales */
   color: var(--color-text-primary);
 }
 
@@ -50,19 +51,20 @@ p {
   width: 100%;
   max-width: 500px;
   margin: 2rem auto;
-  box-shadow: 0 8px 25px rgba(74, 52, 46, 0.08); /* Sombra suave en tono marrón */
+  box-shadow: 0 8px 25px rgba(74, 52, 46, 0.08);
   border: 1px solid var(--color-border);
 }
 
 .form-container h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: var(--color-brand); /* Títulos de formulario con el color de marca */
+  color: var(--color-brand);
   font-size: 2rem;
+  font-weight: 800; /* ExtraBold */
 }
 
 .form-row label {
-  font-weight: 600;
+  font-weight: 700; /* Bold */
   color: var(--color-text-secondary);
   font-size: 0.9rem;
   text-transform: uppercase;
@@ -73,12 +75,13 @@ p {
   width: 100%;
   padding: 0.9rem 1.2rem;
   border: 1px solid var(--color-border);
-  border-radius: 50px; /* Inputs redondeados */
+  border-radius: 50px;
   font-size: 1rem;
   background-color: var(--color-background);
   color: var(--color-text-primary);
   box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
+  font-family: 'Nunito', sans-serif;
 }
 
 .form-input:focus {
@@ -93,7 +96,7 @@ p {
   border: none;
   border-radius: 50px;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: 600; /* SemiBold */
   cursor: pointer;
   background: var(--gradient-primary);
   color: var(--color-card-bg);
@@ -112,7 +115,7 @@ p {
   border: 1px solid var(--color-border);
   border-radius: 50px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 600; /* SemiBold */
   cursor: pointer;
   background-color: var(--color-card-bg);
   color: var(--color-text-secondary);
@@ -139,6 +142,7 @@ p {
 .users-list-container th {
   background-color: #f7f7f7;
   color: var(--color-text-primary);
+  font-weight: 700; /* Bold */
 }
 .users-list-container button {
   margin-right: 5px;
@@ -146,4 +150,5 @@ p {
   border: 1px solid var(--color-border);
   border-radius: 20px;
   cursor: pointer;
+  font-weight: 600; /* SemiBold */
 }
