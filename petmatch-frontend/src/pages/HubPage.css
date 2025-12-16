@@ -1,0 +1,120 @@
+.hub-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--color-background);
+  padding: 2rem;
+}
+
+.hub-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.hub-header h1 {
+  font-size: 3rem;
+  color: var(--color-text-primary);
+}
+
+.hub-header p {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.hub-card {
+  position: relative;
+  height: 500px;
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hub-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 20%, transparent 60%);
+  z-index: 1;
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+}
+
+.card-content h2 {
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem 0;
+  color: white;
+}
+
+.card-content p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.card-action {
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* --- Colores y Fotos de Fondo --- */
+
+.card-match {
+  background-image: url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b'); /* Dos perritos jugando */
+}
+.card-match .card-action { color: #F4A261; } /* Naranja */
+
+.card-loss { /* Cambiado de .card-finder a .card-loss */
+  background-image: url('https://images.unsplash.com/photo-1561037404-61cd46aa615b'); /* Perro mirando lejos */
+}
+.card-loss .card-action { color: #26C6DA; } /* Cyan */
+
+.card-adopt {
+  background-image: url('https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e'); /* Gato en adopción */
+}
+.card-adopt .card-action { color: #BDBDBD; } /* Gris */
+
+.hub-card.disabled {
+  cursor: not-allowed;
+  filter: grayscale(80%);
+}
+
+.hub-card.disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive para móviles */
+@media (max-width: 900px) {
+  .hub-grid {
+    grid-template-columns: 1fr;
+  }
+}

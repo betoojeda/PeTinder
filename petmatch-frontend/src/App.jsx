@@ -4,13 +4,14 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { Toaster } from 'react-hot-toast';
 
 // --- Páginas Públicas ---
-import PublicHomePage from './pages/PublicHomePage';
+import HubPage from './pages/HubPage'; // Nueva página de inicio
+import PublicHomePage from './pages/PublicHomePage'; // Antigua página de inicio, ahora es PetMatch
 import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
-import LostPetsPage from './pages/LostPetsPage'; // Importar la nueva página
+import LostPetsPage from './pages/LostPetsPage';
 
 // --- Páginas Protegidas ---
 import DashboardPage from './pages/DashboardPage';
@@ -53,10 +54,13 @@ function AppRoutes() {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
+        {/* --- NUEVA RUTA RAÍZ --- */}
+        <Route path="/" element={<HubPage />} />
+        
         {/* Rutas Públicas */}
-        <Route path="/" element={<PublicHomePage />} />
+        <Route path="/petmatch" element={<PublicHomePage />} /> {/* Antigua Home ahora es /petmatch */}
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/lost-pets" element={<LostPetsPage />} /> {/* Nueva ruta */}
+        <Route path="/lost-pets" element={<LostPetsPage />} />
         <Route path="/login" element={<PublicRoute element={<LoginPage />} />} />
         <Route path="/register" element={<PublicRoute element={<RegisterPage />} />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -77,6 +81,8 @@ function AppRoutes() {
           <Route path="logs" element={<ErrorLogPage />} />
         </Route>
 
+        {/* Redirección por si alguien entra a /home directamente */}
+        <Route path="/home" element={<Navigate to="/petmatch" />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Suspense>

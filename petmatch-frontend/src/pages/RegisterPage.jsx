@@ -11,6 +11,7 @@ const RegisterPage = () => {
     name: '', lastName: '', email: '', password: '',
     gender: '', numberOfPets: 0, profileDescription: '',
   });
+  const [interest, setInterest] = useState('PetMatch'); // Estado para el interés
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -23,8 +24,15 @@ const RegisterPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    
+    // Añadir el interés a la descripción del perfil
+    const finalFormData = {
+      ...formData,
+      profileDescription: `Interés principal: ${interest}. ${formData.profileDescription}`
+    };
+
     try {
-      await register(formData);
+      await register(finalFormData);
       toast.success('¡Registro exitoso! Bienvenido a PetMatch.');
       navigate('/dashboard');
     } catch (err) {
@@ -42,6 +50,21 @@ const RegisterPage = () => {
           <img src={logo} alt="petmatch Logo" className="auth-logo" />
           <h2>Crear Cuenta</h2>
           <form onSubmit={handleSubmit}>
+            
+            <div className="form-row">
+              <label>¿Qué te trae por aquí?</label>
+              <select 
+                name="interest" 
+                className="form-input" 
+                value={interest} 
+                onChange={(e) => setInterest(e.target.value)}
+              >
+                <option value="PetMatch">Buscar pareja/amigos para mi mascota</option>
+                <option value="PetLoss">Reportar o buscar una mascota perdida</option>
+                <option value="PetAdopt" disabled>Adoptar una mascota (Próximamente)</option>
+              </select>
+            </div>
+
             <div className="form-row">
               <label htmlFor="name">Nombre</label>
               <input id="name" type="text" name="name" placeholder="Tu nombre" className="form-input" value={formData.name} onChange={handleChange} required disabled={isLoading} />
