@@ -3,9 +3,13 @@
 .form-container h3 {
   margin-top: 2rem;
   margin-bottom: 1rem;
-  color: var(--color-primary);
-  border-bottom: 2px solid #fdecdf;
+  color: var(--color-brand); /* Usar el color de marca para los subtítulos */
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .checkbox-group {
@@ -16,11 +20,12 @@
 }
 
 .checkbox-label {
-  font-weight: normal;
+  font-weight: 400; /* Peso normal para las opciones */
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  color: var(--color-text-secondary);
 }
 
 .image-previews {
@@ -34,6 +39,6 @@
   width: 90px;
   height: 90px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px; /* Bordes más redondeados */
   border: 2px solid var(--color-border);
 }

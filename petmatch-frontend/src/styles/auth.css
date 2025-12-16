@@ -15,7 +15,7 @@
 }
 
 .auth-logo {
-  width: 260px;
+  width: 150px; /* Reducir un poco el tamaño del logo */
   margin: 0 auto 1.5rem auto;
   display: block;
 }
@@ -29,7 +29,7 @@
 .auth-links {
   margin-top: 2rem;
   font-size: 0.9rem;
-  color: var(--color-text-light);
+  color: var(--color-text-secondary);
 }
 
 .auth-links p {
@@ -37,8 +37,8 @@
 }
 
 .auth-links a {
-  color: var(--color-primary);
-  font-weight: bold;
+  color: var(--color-brand); /* Usar el color de marca para los enlaces */
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -49,6 +49,6 @@
 .back-to-home-button {
   display: inline-block;
   margin-top: 1rem;
-  color: var(--color-text-light);
+  color: var(--color-text-secondary);
   font-size: 0.9rem;
 }

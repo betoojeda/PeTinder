@@ -1,0 +1,29 @@
+/* Estilos para el formulario de Mascotas Perdidas */
+
+.lost-pet-form-container {
+  max-width: 600px; /* Un poco más ancho para el mapa */
+}
+
+.lost-pet-form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Espacio entre cada fila del formulario */
+}
+
+.map-row {
+  margin-top: 1rem;
+}
+
+.map-container-wrapper {
+  height: 300px;
+  width: 100%;
+  border-radius: 15px;
+  overflow: hidden; /* Asegura que el mapa respete el borde redondeado */
+  border: 1px solid var(--color-border);
+  margin-bottom: 1rem;
+}
+
+.location-input {
+  background-color: #f0f0f0; /* Hacer el input de coordenadas visualmente diferente */
+  cursor: not-allowed;
+}

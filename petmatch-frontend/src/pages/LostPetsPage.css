@@ -13,11 +13,11 @@
   text-align: center;
   margin-bottom: 3rem;
   padding: 4rem 2rem;
-  background: var(--gradient-primary);
-  color: var(--color-card-bg); /* Texto blanco sobre el degradado */
+  background: var(--color-brand); /* Usar el color de marca (naranja) */
+  color: var(--color-card-bg); /* Texto blanco */
   border-radius: 20px;
   position: relative;
-  box-shadow: 0 10px 30px rgba(123, 196, 127, 0.3); /* Sombra verde */
+  box-shadow: 0 10px 30px rgba(244, 162, 97, 0.3); /* Sombra naranja */
 }
 
 .back-to-home-link {
@@ -57,13 +57,13 @@
 
 /* Estilo específico para el botón de reportar en esta página */
 .lost-pets-header .button-primary {
-  background: var(--color-card-bg);
-  color: var(--color-primary-action); /* Texto verde */
+  background: var(--color-card-bg); /* Botón blanco */
+  color: var(--color-brand); /* Texto naranja */
 }
 
 .lost-pets-header .button-primary:hover {
   background: var(--color-card-bg);
-  color: var(--color-primary-action-hover);
+  color: var(--color-brand);
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }

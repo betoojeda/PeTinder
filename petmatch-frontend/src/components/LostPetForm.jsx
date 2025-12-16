@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { createLostPetPost } from '../services/lostPetsService';
 import { uploadPetPhoto } from '../services/api';
 import toast from 'react-hot-toast';
 import LoadingModal from './LoadingModal';
+import './LostPetForm.css'; // Importar el nuevo CSS
 
 const LocationPicker = ({ onLocationChange }) => {
   const [position, setPosition] = useState(null);
@@ -70,32 +71,38 @@ const LostPetForm = ({ onClose, onSaveSuccess }) => {
   return (
     <>
       {isSubmitting && <LoadingModal message="Publicando aviso..." />}
-      <div className="form-container">
+      <div className="form-container lost-pet-form-container">
         <h2>Reportar Mascota Perdida</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-row">
             <label>Nombre de la Mascota</label>
             <input type="text" name="petName" value={formData.petName} onChange={handleChange} className="form-input" required />
           </div>
+          
           <div className="form-row">
             <label>Descripción</label>
-            <textarea name="description" value={formData.description} onChange={handleChange} className="form-input" placeholder="Describe a la mascota, ropa que llevaba, etc." required></textarea>
+            <textarea name="description" value={formData.description} onChange={handleChange} className="form-input" placeholder="Describe a la mascota, ropa que llevaba, etc." rows="4" required></textarea>
           </div>
+          
           <div className="form-row">
             <label>Foto</label>
             <input type="file" accept="image/*" onChange={handleFileChange} className="form-input" required />
           </div>
-          <div className="form-row">
+          
+          <div className="form-row map-row">
             <label>Última ubicación conocida (haz clic en el mapa)</label>
-            <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false} style={{ height: '300px', width: '100%' }}>
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <LocationPicker onLocationChange={handleLocationChange} />
-            </MapContainer>
-            <input type="text" name="location" value={formData.location} onChange={handleChange} className="form-input" placeholder="O escribe la ubicación aquí" required />
+            <div className="map-container-wrapper">
+              <MapContainer center={[19.4326, -99.1332]} zoom={13} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <LocationPicker onLocationChange={handleLocationChange} />
+              </MapContainer>
+            </div>
+            <input type="text" name="location" value={formData.location} onChange={handleChange} className="form-input location-input" placeholder="Coordenadas seleccionadas" readOnly required />
           </div>
+
           <div className="form-actions">
             <button type="button" onClick={onClose} className="button-secondary" disabled={isSubmitting}>Cancelar</button>
             <button type="submit" className="button-primary" disabled={isSubmitting}>Publicar Aviso</button>
