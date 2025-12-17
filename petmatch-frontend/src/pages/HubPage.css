@@ -4,22 +4,44 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 2rem;
-  /* Añadir la imagen de fondo */
   background-image: url('../assets/FondoParaHub.png');
   background-size: cover;
   background-position: center;
+  padding: 2rem;
+  position: relative; /* Para posicionar la navegación */
+}
+
+.hub-nav {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.hub-nav-link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  transition: all 0.3s;
+}
+
+.hub-nav-link:hover {
+  background-color: var(--color-card-bg);
+  color: var(--color-text-primary);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .hub-header {
   text-align: center;
   margin-bottom: 3rem;
-  /* Añadir un fondo semitransparente para que el texto sea legible */
   background-color: rgba(255, 255, 255, 0.8);
   padding: 1.5rem;
   border-radius: 15px;
 }
 
+/* ... (resto de los estilos de HubPage.css) ... */
 .hub-header h1 {
   font-size: 3rem;
   font-weight: 800;
@@ -68,7 +90,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-  /* Degradado oscuro suave para asegurar legibilidad */
   background: linear-gradient(to top, rgba(0,0,0,0.85) 10%, rgba(0,0,0,0.4) 50%, transparent 100%);
   z-index: 1;
 }
@@ -82,7 +103,7 @@
   font-size: 2.2rem;
   font-weight: 800;
   margin: 0 0 0.5rem 0;
-  color: white; /* Texto blanco sobre fondo oscuro */
+  color: white;
 }
 
 .card-content p {
@@ -97,15 +118,13 @@
   font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--color-brand); /* Unificar el color de acción al naranja de la marca */
+  color: var(--color-brand);
   transition: color 0.2s;
 }
 
 .hub-card:hover .card-action {
-  color: var(--color-primary-action-hover); /* Cambiar a verde al hacer hover en la tarjeta */
+  color: var(--color-primary-action-hover);
 }
-
-/* --- Estados Específicos --- */
 
 .hub-card.disabled {
   cursor: not-allowed;
@@ -122,7 +141,6 @@
   color: #ccc;
 }
 
-/* Responsive para móviles */
 @media (max-width: 900px) {
   .hub-grid {
     grid-template-columns: 1fr;

@@ -29,7 +29,6 @@ const PublicHomePage = () => {
         <nav className="landing-nav">
           <div className="desktop-nav">
             <Link to="/" className="landing-nav-btn">← Volver al Hub</Link>
-            <Link to="/about" state={{ from: '/petmatch' }} className="landing-nav-btn">Acerca de</Link>
             <Link to="/login" state={{ from: '/petmatch' }} className="landing-nav-btn">Iniciar Sesión</Link>
             <Link to="/register" state={{ from: '/petmatch' }} className="landing-nav-btn primary">Regístrate</Link>
           </div>
@@ -41,7 +40,6 @@ const PublicHomePage = () => {
               <div className="mobile-menu">
                 <Link to="/" className="menu-item">← Volver al Hub</Link>
                 <Link to="/lost-pets" className="menu-item">Mascotas Perdidas</Link>
-                <Link to="/about" state={{ from: '/petmatch' }} className="menu-item">Acerca de</Link>
                 <Link to="/login" state={{ from: '/petmatch' }} className="menu-item">Iniciar Sesión</Link>
                 <Link to="/register" state={{ from: '/petmatch' }} className="menu-item primary">Regístrate</Link>
               </div>

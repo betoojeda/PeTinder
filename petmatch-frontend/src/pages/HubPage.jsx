@@ -10,6 +10,11 @@ import adoptBg from '../assets/Adopta.jpg';
 const HubPage = () => {
   return (
     <div className="hub-container">
+      {/* Navegación simple para el Hub */}
+      <nav className="hub-nav">
+        <Link to="/about" className="hub-nav-link">Acerca del Proyecto</Link>
+      </nav>
+
       <div className="hub-header">
         <h1>El Universo de tu Mascota Empieza Aquí</h1>
         <p>Conecta, encuentra y dale un hogar a tu mejor amigo.</p>
